@@ -1,0 +1,7 @@
+include readingapp/static/style.css
+include readingapp/static/empty.jpg
+include readingapp/models/database/schema.sql
+include readingapp/default.json
+include .gitignore
+graft readingapp/templates
+global-exclude *.pyc

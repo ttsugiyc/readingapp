@@ -1,0 +1,52 @@
+{% extends 'admin/subbase.html' %}
+
+{% block title %} - 管理者 - メールアドレス変更{% endblock %}
+
+{% block main %}
+  <form
+    method="post" 
+    class="w-full max-w-sm min-h-96 p-6 border border-gray-300 rounded-md
+      flex flex-col justify-between items-center gap-2
+    "
+  >
+    <h2 class="text-gray-700">管理者 - メールアドレス変更</h2>
+
+    <div class="w-full flex flex-col justify-between items-center gap-2">
+      <div class="w-64">
+        <p class="px-1 text-sm text-gray-700">ユーザー名</p>
+        <p class="w-full max-w-64 px-4 text-gray-700 border border-gray-300 rounded-md bg-gray-200">
+          {{ user['username'] }}
+        </p>
+      </div>
+
+      <div class="w-64">
+        <p class="px-1 text-sm text-gray-700">メールアドレス</p>
+        <p class="w-full max-w-64 px-4 text-gray-700 border border-gray-300 rounded-md bg-gray-200">
+          {{ user['email'] or '未登録' }}
+        </p>
+      </div>
+
+      <div class="w-64">
+        <p class="px-1 text-sm text-gray-700">新しいメールアドレス</p>
+
+        <input type="email" name="new_email"
+          class="
+            w-full max-w-64 px-4 border border-gray-300 rounded-md bg-white
+            focus:ring-2 focus:ring-gray-300 outline-none text-gray-700
+          "
+        >
+      </div>
+    </div>
+
+    <p>
+      <input
+        type="submit"
+        class="
+          w-28 h-7 rounded-full bg-teal-500 hover:bg-white
+          border border-teal-500 text-sm text-white hover:text-teal-500 text-center cursor-pointer
+        "
+        value="変更"
+      >
+    </p>
+  </form>
+{% endblock %}

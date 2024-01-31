@@ -1,0 +1,78 @@
+{% extends 'user/subbase.html' %}
+
+{% block title %} - 新しい本{% endblock %}
+
+{% block main %}
+  <h2 class="text-xl text-gray-700">新しい本</h2>
+
+  <form method="post"
+    class="w-full md:w-1/2 max-w-80 h-7 flex justify-center items-center text-gray-500"
+  >
+    <input
+      type="text" name="isbn"
+      class="
+        w-3/4 bg-white pl-4 border border-gray-300
+        focus:ring-2 focus:ring-gray-300
+        outline-none rounded-l-md
+      "
+      placeholder="ISBNコードで検索"
+      value="{{ request.form['isbn'] }}" required
+    >
+
+    <button type="submit"
+      class="w-1/4 min-w-fit bg-gray-100 hover:bg-gray-200 border border-gray-300
+      hover:bg-gray-300 rounded-r-md
+      outline-none text-center"
+    >検索
+    </button>
+  </form>
+
+  <!-- 書籍リスト -->
+  <div class="w-full flex flex-col items-center gap-1">
+    {% for book in books %}
+      <section class="w-full md:max-w-lg md:min-h-48 border border-gray-300 rounded-md
+        p-2 flex flex-col md:flex-row items-stretch gap-2"
+      >
+        {% if book['image_name'] %}
+          <img src="{{ url_for('static', filename='img/' + book['image_name']) }}"
+            alt="{{ book['title'] }}" class="w-32 h-44 mx-auto md:m-0 object-cover border border-gray-400 rounded"
+          >
+        {% else %}
+          <img src="{{ url_for('static', filename='empty.jpg') }}" alt="no image" 
+            class="w-32 h-44 mx-auto md:m-0 object-cover border border-gray-400 rounded hidden md:inline"
+          >
+        {% endif %}
+    
+        <div class="w-full flex flex-col justify-between items-center">
+          <h3 class="text-gray-900 overflow-hidden">
+            {{ book['title'] }}
+          </h3>
+    
+          {% if book['authors'] %}
+            <p class="text-gray-700 overflow-hidden text-sm">
+              著者：{{ book['authors'] }}
+            </p>
+          {% endif %}
+    
+          {% if book['publisher'] %}
+            <p class="text-gray-700 overflow-hidden text-sm">
+              出版社：{{ book['publisher'] }}
+            </p>
+          {% endif %}
+
+          <form action="{{ url_for('bookshelf.select') }}" method="post">
+            <input type="hidden" name="book_id" value="{{ book['id'] }}">
+            <input
+              type="submit"
+              class="
+                w-28 h-7 rounded-full bg-teal-500 hover:bg-white
+                border border-teal-500 text-sm text-white hover:text-teal-500 text-center cursor-pointer
+              "
+              value="選択"
+            >
+          </form>
+        </div>
+      </section>
+    {% endfor %}
+  </div>
+{% endblock %}

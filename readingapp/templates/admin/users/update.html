@@ -1,0 +1,74 @@
+{% extends 'admin/subbase.html' %}
+
+{% block title %} - 管理者 - ユーザー情報{% endblock %}
+
+{% block main %}
+  <div class="w-full max-w-sm min-h-96 p-6 border border-gray-300 rounded-md
+    flex flex-col justify-between items-center gap-2
+  ">
+    <h2 class="text-gray-700">管理者 - ユーザー情報</h2>
+
+    <div class="w-full flex flex-col justify-between items-center gap-2">
+      <div class="w-64">
+        <p class="px-1 text-sm text-gray-700">ユーザー名</p>
+
+        <div class="w-full flex">
+          <p class="w-5/6 px-4 text-gray-700 border border-gray-300 rounded-l-md bg-gray-200">
+            {{ user['username'] }}
+          </p>
+          <p class="w-1/6">
+            <button class="w-full bg-gray-100 hover:bg-gray-200 border border-gray-300
+              hover:bg-gray-300 rounded-r-md outline-none text-center"
+              onclick="location.href='{{ url_for("admin.username", user_id=user["id"]) }}'"
+            >編集
+            </button>
+          </p>
+        </div>
+      </div>
+      <div class="w-64">
+        <p class="px-1 text-sm text-gray-700">メールアドレス</p>
+
+        <div class="w-full flex">
+          <p class="w-5/6 px-4 text-gray-700 border border-gray-300 rounded-l-md bg-gray-200">
+            {{ user['email'] or '未登録' }}
+          </p>
+          <p class="w-1/6">
+            <button class="w-full bg-gray-100 hover:bg-gray-200 border border-gray-300
+              hover:bg-gray-300 rounded-r-md outline-none text-center"
+              onclick="location.href='{{ url_for("admin.email", user_id=user["id"]) }}'"
+            >編集
+            </button>
+          </p>
+        </div>
+      </div>
+      <div class="w-64">
+        <p class="px-1 text-sm text-gray-700">パスワード</p>
+
+        <div class="w-full flex">
+          <p class="w-5/6 px-4 text-gray-700 border border-gray-300 rounded-l-md bg-gray-200">
+            ********
+          </p>
+          <p class="w-1/6">
+            <button class="w-full bg-gray-100 hover:bg-gray-200 border border-gray-300
+              hover:bg-gray-300 rounded-r-md outline-none text-center"
+              onclick="location.href='{{ url_for("admin.password", user_id=user["id"]) }}'"
+            >編集
+            </button>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <form action="{{ url_for('admin.delete', user_id=user['id']) }}" method="post">
+      <input
+        type="submit"
+        class="
+          w-28 h-7 rounded-full bg-orange-500 hover:bg-white
+          border border-orange-500 text-sm text-white hover:text-orange-500 text-center cursor-pointer
+        "
+        value="退会"
+        onclick="return confirm('本当によろしいですか？');"
+      >
+    </form>
+  </div>
+{% endblock %}

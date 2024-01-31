@@ -1,0 +1,64 @@
+{% extends 'admin/subbase.html' %}
+
+{% block title %} - 管理者 - ユーザー一覧{% endblock %}
+
+{% block main %}
+  <header class="w-full flex flex-col md:flex-row justify-center items-center gap-x-8 gap-y-2">
+    <h2 class="text-xl text-gray-700">ユーザー一覧</h2>
+
+    <form method="post" class="w-full h-7 md:w-1/2 flex text-sm">
+      <select name="region"
+        class="w-1/4 bg-gray-100 hover:bg-gray-200 border border-gray-300
+        outline-none text-center rounded-l-md"
+      >
+        <option value="all" {% if not request.form['region'] or request.form['region'] == 'all' %}selected{% endif %}>-</option>
+        <option value="username" {% if request.form['region'] == 'username' %}selected{% endif %}>ユーザー名</option>
+        <option value="email" {% if request.form['region'] == 'email' %}selected{% endif %}>メールアドレス</option>
+      </select>
+
+      <input
+        type="text" name="keyword"
+        class="
+          w-7/12 bg-white pl-4 border border-gray-300
+          focus:ring-2 focus:ring-gray-300
+          outline-none
+        "
+        placeholder="ユーザーを検索"
+        value="{{ request.form['keyword'] }}"
+      >
+
+      <button type="submit"
+        class="w-1/6 bg-gray-100 hover:bg-gray-200 border border-gray-300
+        hover:bg-gray-300 rounded-r-md
+        outline-none text-center"
+      >検索
+      </button>
+    </form>
+  </header>
+
+  <div class="container max-w-2xl rounded-md border border-gray-300">
+    <table class="w-full divide-y-2 divide-gray-300 text-sm">
+      <thead>
+        <tr class="grid grid-cols-2">
+          <th class="whitespace-nowrap px-4 py-2 font-medium text-gray-700">ユーザー名</th>
+          <th class="whitespace-nowrap px-4 py-2 font-medium text-gray-700">メールアドレス</th>
+        </tr>
+      </thead>
+
+      <tbody class="divide-y divide-gray-300">
+        {% for user in users %}
+          <tr class="grid grid-cols-2 cursor-pointer hover:bg-gray-100"
+            onclick="location.href='{{ url_for("admin.update", user_id=user["id"]) }}'"
+          >
+            <td class="whitespace-nowrap px-4 py-2 text-gray-700 overflow-hidden">
+              {{ user['username'] }}
+            </td>
+            <td class="whitespace-nowrap px-4 py-2 text-gray-700 overflow-hidden">
+              {{ user['email'] or '未登録' }}
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}

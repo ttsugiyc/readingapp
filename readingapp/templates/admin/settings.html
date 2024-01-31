@@ -1,0 +1,52 @@
+{% extends 'admin/subbase.html' %}
+
+{% block title %} - 管理者 - アプリ設定{% endblock %}
+
+{% block main %}
+  <form
+    method="post" 
+    class="w-full max-w-sm min-h-96 p-6 border border-gray-300 rounded-md
+      flex flex-col justify-between items-center gap-2
+    "
+  >
+    <h2 class="text-gray-700">管理者 - アプリ設定</h2>
+
+    <div class="w-full flex flex-col justify-between items-center gap-2">
+      <div class="w-64">
+        <p class="px-1 text-sm text-gray-700">パスワード</p>
+
+        <input type="password" name="password"
+          class="
+            w-full max-w-64 px-4 border border-gray-300 rounded-md bg-white
+            focus:ring-2 focus:ring-gray-300 outline-none text-gray-700
+          "
+          required
+        >
+      </div>
+
+      <div class="w-64">
+        <p class="px-1 text-sm text-gray-700">新しいパスワード</p>
+
+        <input type="password" name="new_password"
+          class="
+            w-full max-w-64 px-4 border border-gray-300 rounded-md bg-white
+            focus:ring-2 focus:ring-gray-300 outline-none text-gray-700
+          "
+          required
+        >
+      </div>
+    </div>
+
+    <p>
+      <input
+        type="submit"
+        class="
+          w-28 h-7 rounded-full bg-orange-500 hover:bg-white
+          border border-orange-500 text-sm text-white hover:text-orange-500 text-center cursor-pointer
+        "
+        value="変更"
+        onclick="return confirm('再起動後に反映されます');"
+      >
+    </p>
+  </form>
+{% endblock %}

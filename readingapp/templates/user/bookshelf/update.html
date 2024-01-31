@@ -1,0 +1,106 @@
+{% extends 'user/subbase.html' %}
+
+{% block title %} - 読書記録{% endblock %}
+
+{% block main %}
+  <h2 class="text-xl text-gray-700">読書記録</h2>
+
+  <section class="w-full md:max-w-lg md:min-h-48 border border-gray-300 rounded-md 
+    p-2 flex flex-col md:flex-row items-stretch gap-2"
+  >
+    {% if post['image_name'] %}
+      <img src="{{ url_for('static', filename='img/' + post['image_name']) }}"
+        alt="{{ post['title'] }}" class="w-32 h-44 mx-auto md:m-0 object-cover border border-gray-400 rounded"
+      >
+    {% else %}
+      <img src="{{ url_for('static', filename='empty.jpg') }}" alt="no image" 
+        class="w-32 h-44 mx-auto md:m-0 object-cover border border-gray-400 rounded hidden md:inline"
+      >
+    {% endif %}
+
+    <div class="w-full flex flex-col justify-between items-center">
+      <h3 class="text-gray-900">
+        {{ post['title'] }}
+      </h3>
+
+      {% if post['authors'] %}
+        <p class="text-gray-700 text-sm">
+          著者：{{ post['authors'] }}
+        </p>
+      {% endif %}
+
+      {% if post['publisher'] %}
+        <p class="text-gray-700 text-sm">
+          出版社：{{ post['publisher'] }}
+        </p>
+      {% endif %}
+
+      {% if post['comment'] %}
+        <p class="text-gray-700 text-sm break-all">
+          コメント：<br>{{ post['comment'] }}
+        </p>
+      {% endif %}
+
+      {% if post['status'] %}
+        <p class="text-teal-600">読了</p>
+      {% else %}
+        <p class="text-orange-600">未読了</p>
+      {% endif %}
+    </div>
+  </section>
+
+  <hr class="h-6">
+
+  <form class="w-full flex flex-col items-center gap-4" method="post">
+    <div class="flex justify-center items-center gap-4 text-sm">
+      <label for="status">読了</label>
+      <label
+        class="relative h-8 w-14 cursor-pointer [-webkit-tap-highlight-color:_transparent]"
+      >
+        <input type="checkbox" id="status" name="status" class="peer sr-only"
+          value="1" {% if post['status'] %}checked{% endif %}
+        >
+      
+        <span
+          class="absolute inset-0 rounded-full bg-gray-300 transition peer-checked:bg-teal-500"
+        ></span>
+      
+        <span
+          class="absolute inset-y-0 start-0 m-1 h-6 w-6 rounded-full bg-white transition-all peer-checked:start-6"
+        ></span>
+      </label>
+    </div>
+
+    <div class="w-full md:max-w-lg flex flex-col items-center text-sm">
+      <label for="comment">コメント</label>
+      <textarea name="comment" id="comment" class="
+        w-full h-48 bg-white p-1 border border-gray-300
+        focus:ring-2 focus:ring-gray-300
+        outline-none rounded-md resize-none"
+      >{{ request.form['comment'] or post['comment'] }}</textarea>
+    </div>
+
+    <input
+      type="submit"
+      class="
+        w-28 h-7 rounded-full bg-teal-500 hover:bg-white
+        border border-teal-500 text-sm text-white hover:text-teal-500 text-center cursor-pointer
+      "
+      value="保存"
+    >
+  </form>
+
+  <hr class="h-6">
+
+  <form action="{{ url_for('bookshelf.delete', post_id=post['id']) }}" method="post">
+    <input
+      type="submit"
+      class="
+        w-28 h-7 rounded-full bg-orange-500 hover:bg-white
+        border border-orange-500 text-sm text-white hover:text-orange-500 text-center cursor-pointer
+      "
+      value="本棚から削除"
+      onclick="return confirm('本当によろしいですか？');"
+    >
+  </form>
+{% endblock %}

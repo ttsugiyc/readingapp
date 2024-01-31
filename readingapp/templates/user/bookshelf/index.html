@@ -1,0 +1,124 @@
+{% extends 'user/subbase.html' %}
+
+{% block title %} - 本棚{% endblock %}
+
+{% block main %}
+  <header class="w-full flex flex-wrap justify-center gap-x-8 gap-y-2">
+    <h2 class="text-xl text-gray-700">本棚</h2>
+
+    <p>
+      <input
+        type="button"
+        class="
+          w-20 h-7 rounded-full bg-teal-500 hover:bg-white
+          border border-teal-500 text-sm text-white hover:text-teal-500 text-center cursor-pointer
+        "
+        onclick="location.href='{{ url_for("bookshelf.create") }}'"
+        value="新しい本"
+      >
+    </p>
+
+    <form method="post" class="w-full md:w-2/3 md:max-w-1/2 md:flex text-sm">
+      <p class="w-full md:w-1/2 md:max-w-80 h-7 flex">
+        <select name="sort"
+          class="w-1/3 bg-gray-100 hover:bg-gray-200 border border-gray-300
+          outline-none rounded-l-md text-center"
+        >
+          <option value="modified" {% if not request.form['sort'] or request.form['sort'] == 'modified' %}selected{% endif %}>更新順</option>
+          <option value="created" {% if request.form['sort'] == 'created' %}selected{% endif %}>登録順</option>
+        </select>
+
+        <select name="region"
+          class="w-1/3 bg-gray-100 hover:bg-gray-200 border border-gray-300
+          outline-none text-center"
+        >
+          <option value="all" {% if not request.form['region'] or request.form['region'] == 'all' %}selected{% endif %}>-</option>
+          <option value="title" {% if request.form['region'] == 'title' %}selected{% endif %}>タイトル</option>
+          <option value="authors" {% if request.form['region'] == 'authors' %}selected{% endif %}>著者</option>
+          <option value="publisher" {% if request.form['region'] == 'publisher' %}selected{% endif %}>出版社</option>
+          <option value="comment" {% if request.form['region'] == 'comment' %}selected{% endif %}>コメント</option>
+        </select>
+
+        <select name="status"
+          class="w-1/3 bg-gray-100 hover:bg-gray-200 border border-gray-300
+          outline-none rounded-r-md text-center"
+        >
+          <option value="all" {% if not request.form['status'] or request.form['status'] == 'all' %}selected{% endif %}>-</option>
+          <option value="finished" {% if request.form['status'] == 'finished' %}selected{% endif %}>読了</option>
+          <option value="not_finished" {% if request.form['status'] == 'not_finished' %}selected{% endif %}>未読了</option>
+        </select>
+      </p>
+
+      <p class="w-full md:w-1/2 md:max-w-80 h-7 flex">
+        <input
+          type="text" name="keyword"
+          class="
+            w-3/4 bg-white pl-4 border border-gray-300
+            focus:ring-2 focus:ring-gray-300
+            outline-none rounded-l-md
+          "
+          placeholder="本棚を検索"
+          value="{{ request.form['keyword'] }}"
+        >
+
+        <button type="submit"
+          class="w-1/4 bg-gray-100 hover:bg-gray-200 border border-gray-300
+          hover:bg-gray-300 rounded-r-md
+          outline-none text-center"
+        >検索
+        </button>
+      </p>
+    </form>
+  </header>
+
+  <!-- 書籍リスト -->
+  <div class="w-full flex flex-col items-center gap-1">
+    {% for post in posts %}
+      <section class="w-full md:max-w-lg md:min-h-48 border border-gray-300 rounded-md hover:bg-gray-100">
+        <a href="{{ url_for('bookshelf.update', post_id=post['id']) }}" 
+          class="p-2 flex flex-col md:flex-row items-stretch gap-2"
+        >
+          {% if post['image_name'] %}
+            <img src="{{ url_for('static', filename='img/' + post['image_name']) }}"
+              alt="{{ post['title'] }}" class="w-32 h-44 mx-auto md:m-0 object-cover border border-gray-400 rounded"
+            >
+          {% else %}
+            <img src="{{ url_for('static', filename='empty.jpg') }}" alt="no image" 
+              class="w-32 h-44 mx-auto md:m-0 object-cover border border-gray-400 rounded hidden md:inline"
+            >
+          {% endif %}
+      
+          <div class="w-full flex flex-col justify-between items-center">
+            <h3 class="text-gray-900 overflow-hidden">
+              {{ post['title'] }}
+            </h3>
+      
+            {% if post['authors'] %}
+              <p class="text-gray-700 overflow-hidden text-sm">
+                著者：{{ post['authors'] }}
+              </p>
+            {% endif %}
+      
+            {% if post['publisher'] %}
+              <p class="text-gray-700 overflow-hidden text-sm">
+                出版社：{{ post['publisher'] }}
+              </p>
+            {% endif %}
+
+            {% if post['comment'] %}
+              <p class="text-gray-700 text-sm break-all">
+                コメント：<br>{{ post['comment'] }}
+              </p>
+            {% endif %}
+
+            {% if post['status'] %}
+              <p class="text-teal-600">読了</p>
+            {% else %}
+              <p class="text-orange-600">未読了</p>
+            {% endif %}
+          </div>
+        </a>
+      </section>
+    {% endfor %}
+  </div>
+{% endblock %}
