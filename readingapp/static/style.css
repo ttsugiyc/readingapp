@@ -712,10 +712,6 @@ video {
   width: 1.5rem;
 }
 
-.w-64 {
-  width: 16rem;
-}
-
 .w-7\/12 {
   width: 58.333333%;
 }
@@ -724,22 +720,13 @@ video {
   width: 100%;
 }
 
-.w-fit {
-  width: -moz-fit-content;
-  width: fit-content;
+.min-w-16 {
+  min-width: 4rem;
 }
 
 .min-w-fit {
   min-width: -moz-fit-content;
   min-width: fit-content;
-}
-
-.min-w-24 {
-  min-width: 6rem;
-}
-
-.min-w-16 {
-  min-width: 4rem;
 }
 
 .max-w-2xl {
@@ -972,17 +959,16 @@ video {
   padding-bottom: 0.5rem;
 }
 
-.px-2 {
-  padding-left: 0.5rem;
-  padding-right: 0.5rem;
-}
-
 .pl-4 {
   padding-left: 1rem;
 }
 
 .text-center {
   text-align: center;
+}
+
+.font-body {
+  font-family: Meiryo;
 }
 
 .text-sm {

@@ -2,9 +2,12 @@
 module.exports = {
   content: ["./../readingapp/templates/**/*.html"],
   theme: {
-    body: [
-      'Meiryo',
-    ]
+    extend: {},
+    fontFamily: {
+      body: [
+        'Meiryo',
+      ],
+    }
   },
   plugins: [],
 }
