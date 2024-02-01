@@ -9,14 +9,14 @@
     <h2 class="text-gray-700">アカウント情報</h2>
 
     <div class="w-full flex flex-col justify-between items-center gap-2">
-      <div class="w-64">
+      <div class="w-full max-w-64">
         <p class="px-1 text-sm text-gray-700">ユーザー名</p>
 
         <div class="w-full flex">
           <p class="w-5/6 px-4 text-gray-700 border border-gray-300 rounded-l-md bg-gray-200">
             {{ g.user['username'] }}
           </p>
-          <p class="w-1/6">
+          <p class="w-1/6 min-w-16">
             <button class="w-full bg-gray-100 hover:bg-gray-200 border border-gray-300
               hover:bg-gray-300 rounded-r-md outline-none text-center"
               onclick="location.href='{{ url_for("account.username") }}'"
@@ -25,14 +25,14 @@
           </p>
         </div>
       </div>
-      <div class="w-64">
+      <div class="w-full max-w-64">
         <p class="px-1 text-sm text-gray-700">メールアドレス</p>
 
         <div class="w-full flex">
           <p class="w-5/6 px-4 text-gray-700 border border-gray-300 rounded-l-md bg-gray-200">
             {{ g.user['email'] or '未登録' }}
           </p>
-          <p class="w-1/6">
+          <p class="w-1/6 min-w-16">
             <button class="w-full bg-gray-100 hover:bg-gray-200 border border-gray-300
               hover:bg-gray-300 rounded-r-md outline-none text-center"
               onclick="location.href='{{ url_for("account.email") }}'"
@@ -41,14 +41,14 @@
           </p>
         </div>
       </div>
-      <div class="w-64">
+      <div class="w-full max-w-64">
         <p class="px-1 text-sm text-gray-700">パスワード</p>
 
         <div class="w-full flex">
           <p class="w-5/6 px-4 text-gray-700 border border-gray-300 rounded-l-md bg-gray-200">
             ********
           </p>
-          <p class="w-1/6">
+          <p class="w-1/6 min-w-16">
             <button class="w-full bg-gray-100 hover:bg-gray-200 border border-gray-300
               hover:bg-gray-300 rounded-r-md outline-none text-center"
               onclick="location.href='{{ url_for("account.password") }}'"
