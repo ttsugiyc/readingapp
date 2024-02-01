@@ -19,25 +19,19 @@
     {% endif %}
 
     <div class="w-full flex flex-col justify-between items-center">
-      <h3 class="text-gray-900">
+      <h3 class="text-gray-900 text-center">
         {{ post['title'] }}
       </h3>
 
       {% if post['authors'] %}
-        <p class="text-gray-700 text-sm">
+        <p class="text-gray-700 text-center text-sm">
           著者：{{ post['authors'] }}
         </p>
       {% endif %}
 
       {% if post['publisher'] %}
-        <p class="text-gray-700 text-sm">
+        <p class="text-gray-700 text-center text-sm">
           出版社：{{ post['publisher'] }}
-        </p>
-      {% endif %}
-
-      {% if post['comment'] %}
-        <p class="text-gray-700 text-sm break-all">
-          コメント：<br>{{ post['comment'] }}
         </p>
       {% endif %}
 
@@ -45,6 +39,12 @@
         <p class="text-teal-600">読了</p>
       {% else %}
         <p class="text-orange-600">未読了</p>
+      {% endif %}
+
+      {% if post['comment'] %}
+        <p class="bg-gray-100 border border-gray-300 rounded text-gray-700 text-sm break-all">
+          {{ post['comment'] }}
+        </p>
       {% endif %}
     </div>
   </section>
