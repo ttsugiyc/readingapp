@@ -3,11 +3,11 @@ from flask import g, request
 from readingapp.models.database.connection import get_database
 
 
-def create_post():
+def create_post(book_id):
     db = get_database()
     sql = 'INSERT INTO post (user_id, book_id) VALUES (?, ?)'
     try:
-        db.execute(sql, (g.user['id'], request.form.get('book_id')))
+        db.execute(sql, (g.user['id'], book_id))
         db.commit()
         return None
 

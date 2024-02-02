@@ -3,29 +3,30 @@
 {% block title %} - 新しい本{% endblock %}
 
 {% block main %}
-  <h2 class="text-xl text-gray-700">新しい本</h2>
+  <header class="w-full flex flex-wrap justify-center items-center gap-x-8 gap-y-2">
+    <h2 class="text-xl text-gray-700">新しい本</h2>
 
-  <form method="post"
-    class="w-full md:w-1/2 max-w-80 h-7 flex justify-center items-center text-gray-500"
-  >
-    <input
-      type="text" name="isbn"
-      class="
-        w-3/4 bg-white pl-4 border border-gray-300
-        focus:ring-2 focus:ring-gray-300
-        outline-none rounded-l-md
-      "
-      placeholder="ISBNコードで検索"
-      value="{{ request.form['isbn'] }}" required
+    <form method="post"
+      class="w-full md:w-1/2 max-w-80 flex justify-center items-center text-gray-700"
     >
-
-    <button type="submit"
-      class="w-1/4 min-w-fit bg-gray-100 hover:bg-gray-200 border border-gray-300
-      hover:bg-gray-300 rounded-r-md
-      outline-none text-center"
-    >検索
-    </button>
-  </form>
+      <input
+        type="text" name="isbn"
+        class="
+          w-3/4 h-9 bg-white pl-4 border border-gray-300
+          focus:ring-2 focus:ring-gray-300
+          outline-none rounded-l-md
+        "
+        placeholder="ISBNコードで検索"
+        value="{{ request.form['isbn'] }}" required
+      >
+  
+      <button type="submit"
+        class="w-1/4 h-9 min-w-fit bg-gray-100 hover:bg-gray-200 border border-gray-300
+        hover:bg-gray-300 rounded-r-md outline-none text-center"
+      >検索
+      </button>
+    </form>
+  </header>
 
   <!-- 書籍リスト -->
   <div class="w-full flex flex-col items-center gap-1">
@@ -60,13 +61,12 @@
             </p>
           {% endif %}
 
-          <form action="{{ url_for('bookshelf.select') }}" method="post">
-            <input type="hidden" name="book_id" value="{{ book['id'] }}">
+          <form action="{{ url_for('bookshelf.select', book_id=book['id']) }}" method="post">
             <input
               type="submit"
               class="
-                w-28 h-7 rounded-full bg-teal-500 hover:bg-white
-                border border-teal-500 text-sm text-white hover:text-teal-500 text-center cursor-pointer
+                w-28 h-9 rounded-full bg-teal-500 hover:bg-white
+                border border-teal-500 text-white hover:text-teal-500 text-center cursor-pointer
               "
               value="選択"
             >

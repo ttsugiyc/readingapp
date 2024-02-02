@@ -52,10 +52,10 @@ def create():
     return render_template('user/bookshelf/create.html', books=[])
 
 
-@bp.route('/select', methods=('POST',))
+@bp.route('/<int:book_id>/select', methods=('POST',))
 @login_required
-def select():
-    error = create_post()
+def select(book_id):
+    error = create_post(book_id)
     if error:
         flash(constants.BOOK_INTEGRITY_ERROR)
     return redirect(url_for('bookshelf.index'))

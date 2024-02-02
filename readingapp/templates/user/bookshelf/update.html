@@ -36,9 +36,7 @@
       {% endif %}
 
       {% if post['status'] %}
-        <p class="text-teal-600">読了</p>
-      {% else %}
-        <p class="text-orange-600">未読了</p>
+        <p class="w-16 h-8 bg-gray-50 border border-teal-500 rounded-full text-teal-500 flex justify-center items-center">読了</p>
       {% endif %}
 
       {% if post['comment'] %}
@@ -52,7 +50,7 @@
   <hr class="h-6">
 
   <form class="w-full flex flex-col items-center gap-4" method="post">
-    <div class="flex justify-center items-center gap-4 text-sm">
+    <div class="flex justify-center items-center gap-4">
       <label for="status">読了</label>
       <label
         class="relative h-8 w-14 cursor-pointer [-webkit-tap-highlight-color:_transparent]"
@@ -71,7 +69,7 @@
       </label>
     </div>
 
-    <div class="w-full md:max-w-lg flex flex-col items-center text-sm">
+    <div class="w-full md:max-w-lg flex flex-col items-center">
       <label for="comment">コメント</label>
       <textarea name="comment" id="comment" class="
         w-full h-48 bg-white p-1 border border-gray-300
@@ -83,7 +81,7 @@
     <input
       type="submit"
       class="
-        w-28 h-7 rounded-full bg-teal-500 hover:bg-white
+        w-28 h-9 rounded-full bg-teal-500 hover:bg-white
         border border-teal-500 text-sm text-white hover:text-teal-500 text-center cursor-pointer
       "
       value="保存"
@@ -96,7 +94,7 @@
     <input
       type="submit"
       class="
-        w-28 h-7 rounded-full bg-orange-500 hover:bg-white
+        w-28 h-9 rounded-full bg-orange-500 hover:bg-white
         border border-orange-500 text-sm text-white hover:text-orange-500 text-center cursor-pointer
       "
       value="本棚から削除"

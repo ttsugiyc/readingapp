@@ -6,9 +6,9 @@
   <header class="w-full flex flex-col md:flex-row justify-center items-center gap-x-8 gap-y-2">
     <h2 class="text-xl text-gray-700">ユーザー一覧</h2>
 
-    <form method="post" class="w-full h-7 md:w-1/2 flex text-sm">
+    <form method="post" class="w-full md:w-1/2 flex text-gray-700">
       <select name="region"
-        class="w-1/4 bg-gray-100 hover:bg-gray-200 border border-gray-300
+        class="w-1/4 h-9 bg-gray-100 hover:bg-gray-200 border border-gray-300
         outline-none text-center rounded-l-md"
       >
         <option value="all" {% if not request.form['region'] or request.form['region'] == 'all' %}selected{% endif %}>-</option>
@@ -19,7 +19,7 @@
       <input
         type="text" name="keyword"
         class="
-          w-7/12 bg-white pl-4 border border-gray-300
+          w-7/12 h-9 bg-white pl-4 border border-gray-300
           focus:ring-2 focus:ring-gray-300
           outline-none
         "
@@ -28,7 +28,7 @@
       >
 
       <button type="submit"
-        class="w-1/6 bg-gray-100 hover:bg-gray-200 border border-gray-300
+        class="w-1/6 h-9 bg-gray-100 hover:bg-gray-200 border border-gray-300
         hover:bg-gray-300 rounded-r-md
         outline-none text-center"
       >検索
