@@ -4,57 +4,62 @@
 
 {% block main %}
   <div class="w-full max-w-sm min-h-96 p-6 border border-gray-300 rounded-md
-    flex flex-col justify-between items-center gap-2
-  ">
-    <h2 class="text-gray-700">管理者 - ユーザー情報</h2>
+    flex flex-col justify-between items-center gap-2"
+    >
+    <h2 class="text-gray-700">アカウント情報</h2>
 
     <div class="w-full flex flex-col items-center gap-2">
-      <div class="w-full max-w-64">
+      <div class="w-full">
         <p class="px-1 text-sm text-gray-700">ユーザー名</p>
 
         <div class="w-full flex">
-          <p class="w-5/6 px-4 text-gray-700 border border-gray-300 rounded-l-md bg-gray-200 whitespace-nowrap overflow-x-auto">
+          <p class="w-5/6 h-9 px-4 text-gray-700 border border-gray-300 rounded-l-md bg-gray-200
+            flex items-center whitespace-nowrap overflow-x-auto"
+          >
             {{ user['username'] }}
           </p>
-          <p class="w-1/6 min-w-16">
-            <button class="w-full h-full bg-gray-100 hover:bg-gray-200 border border-gray-300
-              hover:bg-gray-300 rounded-r-md outline-none text-center"
-              onclick="location.href='{{ url_for("admin.username", user_id=user["id"]) }}'"
+          <a href="{{ url_for('admin.username', user_id=user['id']) }}">
+            <p class="w-1/6 h-9 min-w-16 bg-gray-100 hover:bg-gray-200 border border-gray-300
+              hover:bg-gray-300 rounded-r-md flex justify-center items-center outline-none text-center text-gray-700"
             >編集
-            </button>
-          </p>
+            </p>
+          </a>
         </div>
       </div>
-      <div class="w-full max-w-64">
+
+      <div class="w-full">
         <p class="px-1 text-sm text-gray-700">メールアドレス</p>
 
         <div class="w-full flex">
-          <p class="w-5/6 px-4 text-gray-700 border border-gray-300 rounded-l-md bg-gray-200 whitespace-nowrap overflow-x-auto">
+          <p class="w-5/6 h-9 px-4 text-gray-700 border border-gray-300 rounded-l-md bg-gray-200
+            flex items-center whitespace-nowrap overflow-x-auto"
+          >
             {{ user['email'] or '未登録' }}
           </p>
-          <p class="w-1/6 min-w-16">
-            <button class="w-full h-full bg-gray-100 hover:bg-gray-200 border border-gray-300
-              hover:bg-gray-300 rounded-r-md outline-none text-center"
-              onclick="location.href='{{ url_for("admin.email", user_id=user["id"]) }}'"
+          <a href="{{ url_for('admin.email', user_id=user['id']) }}">
+            <p class="w-1/6 h-9 min-w-16 bg-gray-100 hover:bg-gray-200 border border-gray-300
+              hover:bg-gray-300 rounded-r-md flex justify-center items-center outline-none text-center text-gray-700"
             >編集
-            </button>
-          </p>
+            </p>
+          </a>
         </div>
       </div>
-      <div class="w-full max-w-64">
+
+      <div class="w-full">
         <p class="px-1 text-sm text-gray-700">パスワード</p>
 
         <div class="w-full flex">
-          <p class="w-5/6 px-4 text-gray-700 border border-gray-300 rounded-l-md bg-gray-200">
+          <p class="w-5/6 h-9 px-4 text-gray-700 border border-gray-300 rounded-l-md bg-gray-200
+            flex items-center whitespace-nowrap overflow-x-auto"
+          >
             ********
           </p>
-          <p class="w-1/6 min-w-16">
-            <button class="w-full bg-gray-100 hover:bg-gray-200 border border-gray-300
-              hover:bg-gray-300 rounded-r-md outline-none text-center"
-              onclick="location.href='{{ url_for("admin.password", user_id=user["id"]) }}'"
+          <a href="{{ url_for('admin.password', user_id=user['id']) }}">
+            <p class="w-1/6 h-9 min-w-16 bg-gray-100 hover:bg-gray-200 border border-gray-300
+              hover:bg-gray-300 rounded-r-md flex justify-center items-center outline-none text-center text-gray-700"
             >編集
-            </button>
-          </p>
+            </p>
+          </a>
         </div>
       </div>
     </div>
@@ -63,8 +68,8 @@
       <input
         type="submit"
         class="
-          w-28 h-7 rounded-full bg-orange-500 hover:bg-white
-          border border-orange-500 text-sm text-white hover:text-orange-500 text-center cursor-pointer
+          w-28 h-9 rounded-full bg-orange-500 hover:bg-white
+          border border-orange-500 text-white hover:text-orange-500 text-center cursor-pointer
         "
         value="退会"
         onclick="return confirm('本当によろしいですか？');"

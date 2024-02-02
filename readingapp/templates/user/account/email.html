@@ -12,30 +12,33 @@
     <h2 class="text-gray-700">メールアドレス変更</h2>
 
     <div class="w-full flex flex-col items-center gap-2">
-      <div class="w-full max-w-64">
+      <div class="w-full">
         <p class="px-1 text-sm text-gray-700">メールアドレス</p>
-        <p class="w-full max-w-64 px-4 text-gray-700 border border-gray-300 rounded-md bg-gray-200 whitespace-nowrap overflow-x-auto">
+
+        <p class="w-full h-9 px-4 text-gray-700 border border-gray-300 rounded-md
+          bg-gray-200 whitespace-nowrap overflow-x-auto flex items-center"
+        >
           {{ g.user['email'] or '未登録' }}
         </p>
       </div>
 
-      <div class="w-full max-w-64">
+      <div class="w-full">
         <p class="px-1 text-sm text-gray-700">新しいメールアドレス</p>
 
         <input type="email" name="new_email"
           class="
-            w-full max-w-64 px-4 border border-gray-300 rounded-md bg-white
+            w-full h-9 px-4 border border-gray-300 rounded-md bg-white
             focus:ring-2 focus:ring-gray-300 outline-none text-gray-700
           "
         >
       </div>
 
-      <div class="w-full max-w-64">
+      <div class="w-full">
         <p class="px-1 text-sm text-gray-700">パスワード</p>
 
         <input type="password" name="password"
           class="
-            w-full max-w-64 px-4 border border-gray-300 rounded-md bg-white
+            w-full h-9 px-4 border border-gray-300 rounded-md bg-white
             focus:ring-2 focus:ring-gray-300 outline-none text-gray-700
           "
           required
@@ -43,15 +46,13 @@
       </div>
     </div>
 
-    <p>
-      <input
-        type="submit"
-        class="
-          w-28 h-7 rounded-full bg-teal-500 hover:bg-white
-          border border-teal-500 text-sm text-white hover:text-teal-500 text-center cursor-pointer
-        "
-        value="変更"
-      >
-    </p>
+    <input
+      type="submit"
+      class="
+        w-28 h-9 rounded-full bg-teal-500 hover:bg-white
+        border border-teal-500 text-white hover:text-teal-500 text-center cursor-pointer
+      "
+      value="変更"
+    >
   </form>
 {% endblock %}

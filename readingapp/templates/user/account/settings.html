@@ -4,67 +4,75 @@
 
 {% block main %}
   <div class="w-full max-w-sm min-h-96 p-6 border border-gray-300 rounded-md
-    flex flex-col justify-between items-center gap-2
-  ">
+    flex flex-col justify-between items-center gap-2"
+  >
     <h2 class="text-gray-700">アカウント情報</h2>
 
     <div class="w-full flex flex-col items-center gap-2">
-      <div class="w-full max-w-64">
+      <div class="w-full">
         <p class="px-1 text-sm text-gray-700">ユーザー名</p>
 
         <div class="w-full flex">
-          <p class="w-5/6 px-4 text-gray-700 border border-gray-300 rounded-l-md bg-gray-200 whitespace-nowrap overflow-x-auto">
+          <p class="w-5/6 h-9 px-4 text-gray-700 border border-gray-300 rounded-l-md bg-gray-200
+            flex items-center whitespace-nowrap overflow-x-auto"
+          >
             {{ g.user['username'] }}
           </p>
-          <p class="w-1/6 min-w-16">
-            <button class="w-full h-full bg-gray-100 hover:bg-gray-200 border border-gray-300
-              hover:bg-gray-300 rounded-r-md outline-none text-center"
-              onclick="location.href='{{ url_for("account.username") }}'"
+          <a href="{{ url_for('account.username') }}">
+            <p class="w-1/6 h-9 min-w-16 bg-gray-100 hover:bg-gray-200 border border-gray-300
+              hover:bg-gray-300 rounded-r-md flex justify-center items-center outline-none text-center text-gray-700"
             >編集
-            </button>
-          </p>
+            </p>
+          </a>
         </div>
       </div>
-      <div class="w-full max-w-64">
+
+      <div class="w-full">
         <p class="px-1 text-sm text-gray-700">メールアドレス</p>
 
         <div class="w-full flex">
-          <p class="w-5/6 px-4 text-gray-700 border border-gray-300 rounded-l-md bg-gray-200 whitespace-nowrap overflow-x-auto">
+          <p class="w-5/6 h-9 px-4 text-gray-700 border border-gray-300 rounded-l-md bg-gray-200
+            flex items-center whitespace-nowrap overflow-x-auto"
+          >
             {{ g.user['email'] or '未登録' }}
           </p>
-          <p class="w-1/6 min-w-16">
-            <button class="w-full h-full bg-gray-100 hover:bg-gray-200 border border-gray-300
-              hover:bg-gray-300 rounded-r-md outline-none text-center"
-              onclick="location.href='{{ url_for("account.email") }}'"
+          <a href="{{ url_for('account.email') }}">
+            <p class="w-1/6 h-9 min-w-16 bg-gray-100 hover:bg-gray-200 border border-gray-300
+              hover:bg-gray-300 rounded-r-md flex justify-center items-center outline-none text-center text-gray-700"
             >編集
-            </button>
-          </p>
+            </p>
+          </a>
         </div>
       </div>
-      <div class="w-full max-w-64">
+
+      <div class="w-full">
         <p class="px-1 text-sm text-gray-700">パスワード</p>
 
         <div class="w-full flex">
-          <p class="w-5/6 px-4 text-gray-700 border border-gray-300 rounded-l-md bg-gray-200">
+          <p class="w-5/6 h-9 px-4 text-gray-700 border border-gray-300 rounded-l-md bg-gray-200
+            flex items-center whitespace-nowrap overflow-x-auto"
+          >
             ********
           </p>
-          <p class="w-1/6 min-w-16">
-            <button class="w-full bg-gray-100 hover:bg-gray-200 border border-gray-300
-              hover:bg-gray-300 rounded-r-md outline-none text-center"
-              onclick="location.href='{{ url_for("account.password") }}'"
+          <a href="{{ url_for('account.password') }}">
+            <p class="w-1/6 h-9 min-w-16 bg-gray-100 hover:bg-gray-200 border border-gray-300
+              hover:bg-gray-300 rounded-r-md flex justify-center items-center outline-none text-center text-gray-700"
             >編集
-            </button>
-          </p>
+            </p>
+          </a>
         </div>
       </div>
     </div>
 
-    <input
-      type="submit"
-      class="w-16 h-7 bg-gray-100 hover:bg-gray-200 border border-gray-300
-        hover:bg-gray-300 rounded-md outline-none text-sm text-center"
-      value="退会"
-      onclick="location.href='{{ url_for("account.delete") }}'"
-    >
+    <a href="{{ url_for('account.delete') }}">
+      <p
+        type="submit"
+        class="w-16 h-9 bg-gray-100 hover:bg-gray-200 border border-gray-300
+          hover:bg-gray-300 rounded-md outline-none text-center text-gray-700
+          flex justify-center items-center"
+      >退会
+      </p>
+    </a>
+
   </div>
 {% endblock %}
