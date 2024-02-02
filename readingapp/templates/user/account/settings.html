@@ -13,11 +13,11 @@
         <p class="px-1 text-sm text-gray-700">ユーザー名</p>
 
         <div class="w-full flex">
-          <p class="w-5/6 px-4 text-gray-700 border border-gray-300 rounded-l-md bg-gray-200">
+          <p class="w-5/6 px-4 text-gray-700 border border-gray-300 rounded-l-md bg-gray-200 whitespace-nowrap overflow-x-auto">
             {{ g.user['username'] }}
           </p>
           <p class="w-1/6 min-w-16">
-            <button class="w-full bg-gray-100 hover:bg-gray-200 border border-gray-300
+            <button class="w-full h-full bg-gray-100 hover:bg-gray-200 border border-gray-300
               hover:bg-gray-300 rounded-r-md outline-none text-center"
               onclick="location.href='{{ url_for("account.username") }}'"
             >編集
@@ -29,11 +29,11 @@
         <p class="px-1 text-sm text-gray-700">メールアドレス</p>
 
         <div class="w-full flex">
-          <p class="w-5/6 px-4 text-gray-700 border border-gray-300 rounded-l-md bg-gray-200">
+          <p class="w-5/6 px-4 text-gray-700 border border-gray-300 rounded-l-md bg-gray-200 whitespace-nowrap overflow-x-auto">
             {{ g.user['email'] or '未登録' }}
           </p>
           <p class="w-1/6 min-w-16">
-            <button class="w-full bg-gray-100 hover:bg-gray-200 border border-gray-300
+            <button class="w-full h-full bg-gray-100 hover:bg-gray-200 border border-gray-300
               hover:bg-gray-300 rounded-r-md outline-none text-center"
               onclick="location.href='{{ url_for("account.email") }}'"
             >編集

@@ -50,10 +50,10 @@
           <tr class="grid grid-cols-2 cursor-pointer hover:bg-gray-100"
             onclick="location.href='{{ url_for("admin.update", user_id=user["id"]) }}'"
           >
-            <td class="whitespace-nowrap p-2 text-gray-700 overflow-hidden">
+            <td class="whitespace-nowrap p-2 text-gray-700 overflow-x-auto">
               {{ user['username'] }}
             </td>
-            <td class="whitespace-nowrap p-2 text-gray-700 overflow-hidden">
+            <td class="whitespace-nowrap p-2 text-gray-700 overflow-x-auto">
               {{ user['email'] or '未登録' }}
             </td>
           </tr>
