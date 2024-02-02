@@ -692,6 +692,10 @@ video {
   min-height: 3rem;
 }
 
+.min-h-screen {
+  min-height: 100vh;
+}
+
 .w-1\/3 {
   width: 33.333333%;
 }
