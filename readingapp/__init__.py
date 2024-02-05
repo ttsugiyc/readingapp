@@ -10,7 +10,7 @@ def create_app(test_config=None):
         CONFIG = os.path.join(app.instance_path, 'config.json'),
         DEFAULT_CONFIG = 'default.json',
         IMAGE_FOLDER = os.path.join(app.static_folder, 'img'),
-        DATABASE = os.path.join(app.instance_path, 'db.splite'),
+        DATABASE = os.path.join(app.instance_path, 'db.sqlite'),
         TESTING = test_config is not None,
         INITIAL_SETTINGS = True
     )
