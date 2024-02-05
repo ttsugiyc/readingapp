@@ -58,7 +58,7 @@ flask --app readingapp run
 ```
 flask --app readingapp run
 ```
-- データベースの初期化
+- データベースの初期化・ダウンロードした書影の削除
 ```
 flask --app readingapp init-data
 ```
