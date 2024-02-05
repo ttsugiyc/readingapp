@@ -10,7 +10,6 @@ readingapp/static/img/
 .coverage
 htmlcov/
 
-dist/
 build/
 *.egg-info/
 PKG-INFO
