@@ -68,11 +68,10 @@ flask --app readingapp init-pass
 ```
 
 ## 開発環境の構築
-事前に Python3, SQLite3, Node.js をインストールする. 
+事前に Python, SQLite, Node.js をインストールする. 
 
-GitHub よりリポジトリをクローンする.
+GitHub からリポジトリをクローンする.
 ```
-cd <プロジェクトフォルダのパス>
 git clone https://github.com/ttsugiyc/readingapp
 ```
 
@@ -92,10 +91,7 @@ Tailwind CSS をインストールする.
 cd tailwindcss
 npm install
 ```
-
-
-
-tailwindcss フォルダにて以下のコマンドを実行すれば, templates フォルダの変更に応じて, CSS ファイルが変更される.
+templates フォルダを編集するときは, tailwindcss フォルダにて以下のコマンドを実行し, CSS ファイルが自動で変更されるようにしておく.
 ```
 npx tailwindcss -i input.css -o ../readingapp/static/style.css --watch
 ```

@@ -40,6 +40,22 @@ def get_books():
     return books, error
 
 
+def get_books_from_api():
+    """
+    データベースを検索せず、直接APIを利用
+    """
+    isbn_13 = canonicalize_ISBN(request.form.get('isbn'))
+    infos = request_books(isbn_13)
+    create_books(infos)
+    books = search_books(isbn_13)
+
+    error = None
+    if not books:
+        error = constants.API_ERROR
+
+    return books, error
+
+
 @bp.route('/create', methods=('GET', 'POST'))
 @login_required
 def create():
