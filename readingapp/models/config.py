@@ -7,8 +7,8 @@ from flask import Flask, current_app, request
 from werkzeug.security import generate_password_hash, check_password_hash
 
 
-@click.command('init-config')
-def init_config_command():
+@click.command('init-pass')
+def init_pass_command():
     """Clear the existing config file."""
     if os.path.isfile(current_app.config['CONFIG']):
         os.remove(current_app.config['CONFIG'])
@@ -17,7 +17,7 @@ def init_config_command():
 
 
 def register_config(app: Flask, test_config=None):
-    app.cli.add_command(init_config_command)
+    app.cli.add_command(init_pass_command)
     if test_config is None:
         is_loaded = app.config.from_file(app.config['CONFIG'], load=json.load, silent=True)
         if is_loaded:
