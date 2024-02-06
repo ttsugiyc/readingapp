@@ -134,7 +134,7 @@ flask --app readingapp run --debug
 デバッグモードでは Web ページを読み込む際, ファイルの更新が反映される.
 
 ### Tailwind CSS の使用
-`/readingapp/templates` フォルダを編集するときは, `tailwindcss` フォルダで以下のコマンドを実行し, CSS ファイルが自動で変更されるようにしておく.
+`/readingapp/templates` 以下を編集するときは, `tailwindcss` で以下のコマンドを実行し, CSS ファイルが自動で更新されるようにしておく.
 ```
 npx tailwindcss -i input.css -o ../readingapp/static/style.css --watch
 ```
