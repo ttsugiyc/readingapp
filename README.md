@@ -17,8 +17,8 @@
 
 Python 仮想環境を作成し, 起動する.
 ```
-py -m venv <仮想環境名>
-.\<仮想環境名>\Scripts\activate
+py -m venv venv
+.\venv\Scripts\activate
 ```
 
 pip で配布ファイルを仮想環境にインストールする.
@@ -31,37 +31,10 @@ pip install <配布ファイルのパス>
 ```
 flask --app readingapp run
 ```
-アプリの停止は `Ctrl+C` .
-
-### ユーザーページ
-`http://127.0.0.1:5000/` .
-- 認証
-  - 新規登録
-  - ログイン
-- 本棚管理
-  - 本棚
-  - 新しい本
-  - 読書記録
-- アカウント管理
-  - アカウント情報
-  - ユーザー名変更
-  - メールアドレス変更
-  - パスワード変更
-  - 退会
-
-### 管理者ページ
-`http://127.0.0.1:5000/admin` .
-- ログイン
-- ユーザー管理
-  - ユーザー一覧
-  - ユーザー情報
-  - ユーザー名変更
-  - メールアドレス変更
-  - パスワード変更
-- アプリ設定
+Web ブラウザで `http://127.0.0.1:5000/` を開いて使用する. アプリの停止は `Ctrl+C` .
 
 ### 初期設定
-はじめに, 管理者はアプリの初期設定を行う必要がある.
+セキュリティを高めるため, 管理者はアプリの初期設定を行う必要がある.
 
 1. 画面右下の「管理者ページへ」をクリックして, 管理者ページに移動する.
 
@@ -74,6 +47,40 @@ flask --app readingapp run
 5. ターミナル上で `Ctrl+C` を入力してアプリを終了した後, アプリを再び起動する.
 
 6. 新しいパスワードで管理者ページにログインできれば初期設定は完了. ユーザーページにアクセスすると, 画面右下の「管理者ページへ」がなくなっていることが確認できる.
+
+### ユーザーページ
+- 本棚管理
+  - 本棚 `/`
+    - 保存した書籍が表示される.
+    - 書籍を様々な条件で検索できる.
+  - 新しい本 `/create`
+    - 書籍を ISBN コードで検索できる.
+    - 書籍を保存できる.
+  - 読書記録 `/<投稿id>/update`
+    - 書籍にコメントできる.
+    - 読了したことを記録できる.
+- 認証
+  - 新規登録 `/auth/register`
+  - ログイン `/auth/login`
+- アカウント管理
+  - アカウント情報 `/account/settings`
+  - ユーザー名変更 `/account/username`
+  - メールアドレス変更 `/account/email`
+  - パスワード変更 `/account/password`
+  - 退会 `/account/delete`
+
+### 管理者ページ
+- ユーザー管理
+  - ユーザー一覧 `/admin`
+  - ユーザー情報 `/admin/<ユーザーid>/update`
+  - ユーザー名変更 `/admin/<ユーザーid>/username`
+  - メールアドレス変更 `/admin/<ユーザーid>/email`
+  - パスワード変更 `/admin/<ユーザーid>/password`
+- ログイン `/admin/login`
+- アプリ設定 `/admin/settings`
+  - 管理者パスワードを変更できる.
+  - その際, SECRET_KEY が自動で変更される.
+  - 変更はアプリの再起動時に反映される.
 
 ### コマンド
 
@@ -90,8 +97,12 @@ flask --app readingapp init-data
 flask --app readingapp init-pass
 ```
 
-## 開発環境の構築
+## 開発環境
+
+### 環境構築
 事前に Python, SQLite, Node.js をインストールする. 
+
+プロジェクトフォルダを作成して, ターミナルで開く. 
 
 GitHub からリポジトリをクローンする.
 ```
@@ -114,7 +125,16 @@ Tailwind CSS をインストールする.
 cd tailwindcss
 npm install
 ```
-templates フォルダを編集するときは, tailwindcss フォルダにて以下のコマンドを実行し, CSS ファイルが自動で変更されるようにしておく.
+
+### デバッグモード
+アプリをデバッグモードで起動する. 
+```
+flask --app readingapp run --debug
+```
+デバッグモードでは Web ページを読み込む際, ファイルの更新が反映される.
+
+### Tailwind CSS の使用
+`/readingapp/templates` フォルダを編集するときは, `tailwindcss` フォルダで以下のコマンドを実行し, CSS ファイルが自動で変更されるようにしておく.
 ```
 npx tailwindcss -i input.css -o ../readingapp/static/style.css --watch
 ```
