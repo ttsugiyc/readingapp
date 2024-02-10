@@ -1,5 +1,7 @@
 import re
 
+from readingapp.models.exceptions import MyException
+
 
 def calculate_check_digit_10(isbn_10):
     x = 0
@@ -54,12 +56,11 @@ def translate_ISBN10_to_ISBN13(isbn_10):
 def canonicalize_ISBN(code):
     code = code.upper()
     code = ''.join(re.findall('[0-9X]', code))
-    isbn_13 = None
     if len(code) == 10:
         if check_ISBN10(code):
-            isbn_13 = translate_ISBN10_to_ISBN13(code)
+            return translate_ISBN10_to_ISBN13(code)
     elif len(code) == 13:
         if check_ISBN13(code):
-            isbn_13 = code
-    
-    return isbn_13
+            return code
+
+    raise MyException('ISBN コードが正しくありません')

@@ -1,10 +1,9 @@
 import functools
 
 from flask import Blueprint, flash, g, redirect, render_template, request, session, url_for
-from werkzeug.exceptions import abort
 
-from readingapp.models.database.user import create_user, read_user, request_user_id
-from readingapp.views import constants
+from readingapp.models.exceptions import MyException
+from readingapp.models.database.user import create_user, read_user, login_user
 
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
@@ -13,16 +12,12 @@ bp = Blueprint('auth', __name__, url_prefix='/auth')
 @bp.route('/register', methods=('GET', 'POST'))
 def register():
     if request.method == 'POST':
-        error = create_user()
-
-        if not error:
-            return redirect(url_for("auth.login"))
-        elif error == 1:
-            flash(constants.USERNAME_INTEGRITY_ERROR)
-        elif error == 2:
-            flash(constants.EMAIL_INTEGRITY_ERROR)
-        else:
-            abort(404)
+        try:
+            create_user()
+            return redirect(url_for('auth.login'))
+        
+        except MyException as e:
+            flash(e.__str__())
 
     return render_template('user/auth/register.html')
 
@@ -30,14 +25,11 @@ def register():
 @bp.route('/login', methods=('GET', 'POST'))
 def login():
     if request.method == 'POST':
-        user_id = request_user_id()
-
-        if user_id is not None:
-            session.clear()
-            session['user_id'] = user_id
+        if login_user():
             return redirect(url_for('index'))
 
-        flash(constants.LOGIN_ERROR)
+        else:
+            flash('ログインできませんでした')
 
     return render_template('user/auth/login.html')
 
@@ -49,8 +41,6 @@ def load_logged_in():
         g.user = None
     else:
         g.user = read_user(user_id)
-
-    g.admin = session.get('admin')
 
 
 @bp.route('/logout')

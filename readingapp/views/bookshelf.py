@@ -6,7 +6,7 @@ from readingapp.models.isbn import canonicalize_ISBN
 from readingapp.models.database.post import create_post, read_post, update_post, delete_post, search_posts
 from readingapp.models.database.book import create_books, search_books
 from readingapp.models.api import request_books
-from readingapp.views import constants
+from readingapp.models.exceptions import MyException
 
 
 bp = Blueprint('bookshelf', __name__)
@@ -25,19 +25,13 @@ def get_books():
     """
     isbn_13 = canonicalize_ISBN(request.form.get('isbn'))
     books = search_books(isbn_13)
-    error = None
 
-    if not isbn_13:
-        error = constants.ISBN_ERROR
-
-    elif not books:
+    if not books:
         infos = request_books(isbn_13)
         create_books(infos)
         books = search_books(isbn_13)
-        if not books:
-            error = constants.API_ERROR
 
-    return books, error
+    return books
 
 
 def get_books_from_api():
@@ -49,31 +43,34 @@ def get_books_from_api():
     create_books(infos)
     books = search_books(isbn_13)
 
-    error = None
-    if not books:
-        error = constants.API_ERROR
-
-    return books, error
+    return books
 
 
 @bp.route('/create', methods=('GET', 'POST'))
 @login_required
 def create():
     if request.method == 'POST':
-        books, error = get_books()
-        if not error:
+        try:
+            books = get_books()
+            if not books:
+                raise MyException('書籍情報を取得できませんでした')
             return render_template('user/bookshelf/create.html', books=books)
 
-        flash(error)
+        except MyException as e:
+            flash(e.__str__())
+
     return render_template('user/bookshelf/create.html', books=[])
 
 
 @bp.route('/<int:book_id>/select', methods=('POST',))
 @login_required
 def select(book_id):
-    error = create_post(book_id)
-    if error:
-        flash(constants.BOOK_INTEGRITY_ERROR)
+    try:
+        create_post(book_id)
+    
+    except MyException as e:
+        flash(e.__str__())
+
     return redirect(url_for('bookshelf.index'))
 
 

@@ -1,13 +1,12 @@
-import re
-
-from flask import current_app, request, g
+from flask import request, g, session
 from werkzeug.security import generate_password_hash, check_password_hash
 
-from readingapp.models.database.connection import get_database
+from readingapp.models.database.base import get_database
+from readingapp.models.exceptions import UniquenessError, PasswordError
 
 
 def empty_to_none(string: str):
-    """Not Null制約を活用するため、空の文字列をNoneに変換したい"""
+    """Not Null制約を活用するため、空の文字列をNoneに変換"""
     return string if not string == '' else None
 
 
@@ -22,16 +21,14 @@ def create_user():
     try:
         db.execute(sql, params)
         db.commit()
-        return 0
 
     except db.IntegrityError as error:
         db.rollback()
-        current_app.logger.info(error)
-        if re.search('username$', error.args[0]):
-            return 1
-        if re.search('email$', error.args[0]):
-            return 2
-        return 255
+        if error.args == ('UNIQUE constraint failed: user.username',):
+            raise UniquenessError('ユーザー名')
+        if error.args == ('UNIQUE constraint failed: user.email',):
+            raise UniquenessError('メールアドレス')
+        raise error
 
 
 def read_user(user_id):
@@ -48,11 +45,12 @@ def update_username(user_id):
     try:
         db.execute(sql, (new_username, user_id))
         db.commit()
-        return 0
+
     except db.IntegrityError as error:
         db.rollback()
-        current_app.logger.info(error)
-        return 1
+        if error.args == ('UNIQUE constraint failed: user.username',):
+            raise UniquenessError('ユーザー名')
+        raise error
 
 
 def update_user_email(user_id):
@@ -62,11 +60,12 @@ def update_user_email(user_id):
     try:
         db.execute(sql, (new_email, user_id))
         db.commit()
-        return 0
+
     except db.IntegrityError as error:
         db.rollback()
-        current_app.logger.info(error)
-        return 1
+        if error.args == ('UNIQUE constraint failed: user.email',):
+            raise UniquenessError('メールアドレス')
+        raise error
 
 
 def update_user_password(user_id):
@@ -75,25 +74,27 @@ def update_user_password(user_id):
     new_password = generate_password_hash(request.form.get('new_password'))
     db.execute(sql, (new_password, user_id))
     db.commit()
-    return 0
 
 
 def update_username_by_self():
     if check_password_hash(g.user['password'], request.form.get('password')):
-        return update_username(g.user['id'])
-    return 2
+        update_username(g.user['id'])
+    else:
+        raise PasswordError()
 
 
 def update_user_email_by_self():
     if check_password_hash(g.user['password'], request.form.get('password')):
-        return update_user_email(g.user['id'])
-    return 2
+        update_user_email(g.user['id'])
+    else:
+        raise PasswordError()
 
 
 def update_user_password_by_self():
     if check_password_hash(g.user['password'], request.form.get('password')):
-        return update_user_password(g.user['id'])
-    return 2
+        update_user_password(g.user['id'])
+    else:
+        raise PasswordError()
 
 
 def delete_user(user_id):
@@ -103,23 +104,26 @@ def delete_user(user_id):
     sql = 'DELETE FROM post WHERE user_id = ?'
     db.execute(sql, (user_id,))
     db.commit()
-    return 0
 
 
 def delete_user_by_self():
     if check_password_hash(g.user['password'], request.form.get('password')):
-        return delete_user(g.user['id'])
-    return 2
+        delete_user(g.user['id'])
+    else:
+        raise PasswordError()
 
 
-def request_user_id():
+def login_user():
     db = get_database()
     sql = 'SELECT * FROM user WHERE username = ?'
     user = db.execute(sql, (request.form.get('username'),)).fetchone()
+
+    session.clear()
     if user and check_password_hash(user['password'], request.form.get('password')):
-        return user['id']
+        session['user_id'] = user['id']
+        return True
     else:
-        return None
+        return False
 
 
 def search_user():

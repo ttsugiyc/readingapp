@@ -1,6 +1,6 @@
 from flask import current_app
 
-from readingapp.models.database.connection import get_database
+from readingapp.models.database.base import get_database
 
 
 def create_books(infos):
@@ -22,7 +22,8 @@ def create_books(infos):
             db.commit()
             current_app.logger.info('Obtained book information from API.')
 
-        except db.IntegrityError:
+        except db.IntegrityError as e:
+            print(e)
             db.rollback()
             current_app.logger.info('Information about this book is already available.')
 

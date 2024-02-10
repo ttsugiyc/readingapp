@@ -1,6 +1,7 @@
 from flask import g, request
 
-from readingapp.models.database.connection import get_database
+from readingapp.models.database.base import get_database
+from readingapp.models.exceptions import MyException
 
 
 def create_post(book_id):
@@ -9,11 +10,10 @@ def create_post(book_id):
     try:
         db.execute(sql, (g.user['id'], book_id))
         db.commit()
-        return None
 
-    except db.IntegrityError as error:
+    except db.IntegrityError:
         db.rollback()
-        return error.args[0]
+        raise MyException('登録済みの書籍です')
 
 
 def read_post(post_id):
@@ -90,6 +90,7 @@ def add_sort(sql):
     else:
         sql += ' ORDER BY modified DESC'
     return sql
+
 
 def search_posts():
     sql = (

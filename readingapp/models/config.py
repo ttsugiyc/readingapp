@@ -40,6 +40,6 @@ def set_config():
 
         with open(current_app.config['CONFIG'], 'wt') as f:
             json.dump(config, f, indent=2)
-        return 0
+        return True
 
-    return 1
+    return False

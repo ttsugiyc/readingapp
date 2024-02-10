@@ -7,7 +7,7 @@
     </a>
 
     <div class="flex flex-wrap items-center gap-2">
-      {% if g.admin %}
+      {% if 'admin' in session %}
         <a href="{{ url_for('admin.settings') }}">
           <p class="
             w-20 h-9 rounded-full bg-white hover:bg-teal-500 border border-teal-500 

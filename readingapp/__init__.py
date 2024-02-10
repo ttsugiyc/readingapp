@@ -31,7 +31,7 @@ def create_app(test_config=None):
     from .models.config import register_config
     register_config(app, test_config)
 
-    from .models.database.connection import register_database
+    from .models.database.base import register_database
     register_database(app)
 
     from .views.auth import bp as auth_bp

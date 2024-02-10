@@ -4,11 +4,11 @@ from flask import Blueprint, flash, redirect, render_template, request, session,
 from werkzeug.security import check_password_hash
 
 from readingapp.models.config import set_config
+from readingapp.models.exceptions import MyException
 from readingapp.models.database.user import (
     read_user, search_user, delete_user,
     update_username, update_user_email, update_user_password
 )
-from readingapp.views import constants
 
 
 bp = Blueprint('admin', __name__, url_prefix='/admin')
@@ -34,12 +34,12 @@ def index():
 @bp.route('/login', methods=('GET', 'POST'))
 def login():
     if request.method == 'POST':
+        session.clear()
         if check_password_hash(current_app.config['PASSWORD'], request.form['password']):
-            session.clear()
             session['admin'] = True
             return redirect(url_for('admin.index'))
         else:
-            flash(constants.LOGIN_ERROR)
+            flash('ログインできませんでした')
 
     return render_template('admin/login.html')
 
@@ -60,11 +60,12 @@ def update(user_id):
 @bp.route('/<int:user_id>/username', methods=('GET', 'POST',))
 def username(user_id):
     if request.method == 'POST':
-        error = update_username(user_id)
-        if not error:
+        try:
+            update_username(user_id)
             return redirect(url_for('admin.update', user_id=user_id))
-        else:
-            flash(constants.USERNAME_INTEGRITY_ERROR)
+        
+        except MyException as e:
+            flash(e.__str__())
 
     user = read_user(user_id)
     return render_template('admin/users/username.html', user=user)
@@ -73,11 +74,12 @@ def username(user_id):
 @bp.route('/<int:user_id>/email', methods=('GET', 'POST',))
 def email(user_id):
     if request.method == 'POST':
-        error = update_user_email(user_id)
-        if not error:
+        try:
+            update_user_email(user_id)
             return redirect(url_for('admin.update', user_id=user_id))
-        else:
-            flash(constants.EMAIL_INTEGRITY_ERROR)
+        
+        except MyException as e:
+            flash(e.__str__())
 
     user = read_user(user_id)
     return render_template('admin/users/email.html', user=user)
@@ -104,10 +106,9 @@ def delete(user_id):
 @login_required_as_admin
 def settings():
     if request.method == 'POST':
-        error = set_config()
-        if not error:
+        if set_config():
             return redirect(url_for('admin.index'))
         else:
-            flash(constants.PASSWORD_ERROR)
+            flash('パスワードが違います')
 
     return render_template('admin/settings.html')
