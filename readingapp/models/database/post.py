@@ -1,3 +1,5 @@
+import unicodedata
+
 from flask import g, request
 
 from readingapp.models.database.base import get_database
@@ -26,6 +28,23 @@ def read_post(post_id):
     return post
 
 
+def get_width(string: str):
+    """半角文字幅1, 全角文字幅2"""
+    width = 0
+    for char in string:
+        if unicodedata.east_asian_width(char) in 'FWA':
+            width += 2
+        else:
+            width += 1
+    return width
+
+
+def validate_comment(comment: str):
+    if get_width(comment) <= 1000:
+        raise MyException('コメントは1000文字以内で入力して下さい')
+    return comment
+
+
 def update_post(post_id):
     db = get_database()
     sql = (
@@ -33,7 +52,7 @@ def update_post(post_id):
         ' modified = CURRENT_TIMESTAMP WHERE id = ?'
     )
     params = (
-        request.form.get('comment'),
+        validate_comment(request.form.get('comment')),
         'status' in request.form,
         post_id
     )

@@ -1,20 +1,52 @@
+import re
+
 from flask import request, g, session
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from readingapp.models.database.base import get_database
-from readingapp.models.exceptions import UniquenessError, PasswordError
+from readingapp.models.exceptions import MyException, UniquenessError, PasswordError
 
 
-def empty_to_none(string: str):
-    """Not Null制約を活用するため、空の文字列をNoneに変換"""
-    return string if not string == '' else None
+# def empty_to_none(string: str):
+#     """Not Null制約を活用するため、空の文字列をNoneに変換"""
+#     return string if not string == '' else None
+
+
+def validate_username(username: str):
+    """文字幅16, ASCII, Not-Null"""
+    if not username:
+        raise MyException('ユーザー名を入力して下さい')
+
+    if not re.fullmatch('[\u0000-\u007F]+', username):
+        char = re.search('[^\u0000-\u007F]', username).group()
+        raise MyException(f'ユーザー名に使用できない文字 "{char}" が含まれています')
+
+    if not len(username) <= 16:
+        raise MyException('ユーザー名は16文字以内で入力して下さい')
+
+    return username
+
+
+def validate_email(email: str):
+    """文字幅32, ASCII"""
+    if not email:
+        return None
+
+    if not re.fullmatch('[\u0000-\u007F]+', email):
+        char = re.search('[^\u0000-\u007F]', email).group()
+        raise MyException(f'メールアドレスに使用できない文字 "{char}" が含まれています')
+
+    if not len(email) <= 30:
+        raise MyException('メールアドレスは30文字以内で入力して下さい')
+
+    return email
 
 
 def create_user():
     sql = 'INSERT INTO user (username, email, password) VALUES (?, ?, ?)'
     params = (
-        empty_to_none(request.form.get('username')),
-        empty_to_none(request.form.get('email')),
+        validate_username(request.form.get('username')),
+        validate_email(request.form.get('email')),
         generate_password_hash(request.form.get('password'))
     )
     db = get_database()
@@ -41,7 +73,7 @@ def read_user(user_id):
 def update_username(user_id):
     sql = 'UPDATE user SET username = ? WHERE id = ?'
     db = get_database()
-    new_username = empty_to_none(request.form.get('new_username'))
+    new_username = validate_username(request.form.get('new_username'))
     try:
         db.execute(sql, (new_username, user_id))
         db.commit()
@@ -56,7 +88,7 @@ def update_username(user_id):
 def update_user_email(user_id):
     sql = 'UPDATE user SET email = ? WHERE id = ?'
     db = get_database()
-    new_email = empty_to_none(request.form.get('new_email'))
+    new_email = validate_email(request.form.get('new_email'))
     try:
         db.execute(sql, (new_email, user_id))
         db.commit()
