@@ -1,3 +1,5 @@
+import os
+
 from flask import current_app
 
 from readingapp.models.database.base import get_database
@@ -20,12 +22,14 @@ def create_books(infos):
             )
             db.execute(sql, params)
             db.commit()
-            current_app.logger.info('Obtained book information from API.')
+            current_app.logger.debug('Obtained book information from API.')
 
-        except db.IntegrityError as e:
-            print(e)
+        except db.IntegrityError:
             db.rollback()
-            current_app.logger.info('Information about this book is already available.')
+            if info.get('image_name'):
+                image_path = os.path.join(current_app.config['IMAGE_FOLDER'], info['image_name'])
+                os.remove(image_path)
+            current_app.logger.debug('Information about this book is already available.')
 
 
 def search_books(isbn_13):
