@@ -23,6 +23,7 @@ def username():
     if request.method == 'POST':
         try:
             update_username_by_self()
+            flash('ユーザー名を変更しました')
             return redirect(url_for('account.settings'))
 
         except MyException as e:
@@ -37,6 +38,7 @@ def email():
     if request.method == 'POST':
         try:
             update_user_email_by_self()
+            flash('メールアドレスを変更しました')
             return redirect(url_for('account.settings'))
 
         except MyException as e:
@@ -51,6 +53,7 @@ def password():
     if request.method == 'POST':
         try:
             update_user_password_by_self()
+            flash('パスワードを変更しました')
             return redirect(url_for('account.settings'))
 
         except MyException as e:
@@ -65,6 +68,7 @@ def delete():
     if request.method == 'POST':
         try:
             delete_user_by_self()
+            flash('アカウントを削除しました')
             return redirect(url_for('auth.login'))
 
         except MyException as e:

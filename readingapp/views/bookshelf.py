@@ -72,6 +72,7 @@ def create():
 def select(book_id):
     try:
         create_post(book_id)
+        flash('書籍を追加しました')
 
     except MyException as e:
         flash(e.__str__(), category='error')
@@ -100,6 +101,7 @@ def update(post_id):
     if request.method == 'POST':
         try:
             update_post(post_id)
+            flash('読書記録を更新しました')
             return redirect(url_for('bookshelf.index'))
 
         except MyException as e:
@@ -114,4 +116,5 @@ def delete(post_id):
     post = read_post(post_id)
     check_owner(post)
     delete_post(post_id)
+    flash('書籍を削除しました')
     return redirect(url_for('bookshelf.index'))

@@ -47,6 +47,7 @@ def login():
 @bp.route('/logout')
 def logout():
     session.clear()
+    flash('ログアウトしました')
     return redirect(url_for('admin.login'))
 
 
@@ -62,6 +63,7 @@ def username(user_id):
     if request.method == 'POST':
         try:
             update_username(user_id)
+            flash('ユーザー名を変更しました')
             return redirect(url_for('admin.update', user_id=user_id))
         
         except MyException as e:
@@ -76,6 +78,7 @@ def email(user_id):
     if request.method == 'POST':
         try:
             update_user_email(user_id)
+            flash('メールアドレスを変更しました')
             return redirect(url_for('admin.update', user_id=user_id))
         
         except MyException as e:
@@ -89,6 +92,7 @@ def email(user_id):
 def password(user_id):
     if request.method == 'POST':
         update_user_password(user_id)
+        flash('パスワードを変更しました')
         return redirect(url_for('admin.update', user_id=user_id))
 
     user = read_user(user_id)
@@ -99,6 +103,7 @@ def password(user_id):
 @login_required_as_admin
 def delete(user_id):
     delete_user(user_id)
+    flash('ユーザーを削除しました')
     return redirect(url_for('admin.index'))
 
 
@@ -107,6 +112,7 @@ def delete(user_id):
 def settings():
     if request.method == 'POST':
         if set_config():
+            flash('設定を変更しました')
             return redirect(url_for('admin.index'))
         else:
             flash('パスワードが違います', category='error')

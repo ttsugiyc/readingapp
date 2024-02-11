@@ -14,6 +14,7 @@ def register():
     if request.method == 'POST':
         try:
             create_user()
+            flash('アカウントを作成しました')
             return redirect(url_for('auth.login'))
         
         except MyException as e:
@@ -46,6 +47,7 @@ def load_logged_in():
 @bp.route('/logout')
 def logout():
     session.clear()
+    flash('ログアウトしました')
     return redirect(url_for('auth.login'))
 
 
