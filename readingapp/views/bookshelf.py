@@ -62,7 +62,7 @@ def create():
             return render_template('user/bookshelf/create.html', books=books)
 
         except MyException as e:
-            flash(e.__str__())
+            flash(e.__str__(), category='error')
 
     return render_template('user/bookshelf/create.html', books=[])
 
@@ -74,7 +74,7 @@ def select(book_id):
         create_post(book_id)
 
     except MyException as e:
-        flash(e.__str__())
+        flash(e.__str__(), category='error')
 
     return redirect(url_for('bookshelf.index'))
 
@@ -103,7 +103,7 @@ def update(post_id):
             return redirect(url_for('bookshelf.index'))
 
         except MyException as e:
-            flash(e.__str__())
+            flash(e.__str__(), category='error')
 
     return render_template('user/bookshelf/update.html', post=post)
 

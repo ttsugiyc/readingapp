@@ -39,7 +39,7 @@ def login():
             session['admin'] = True
             return redirect(url_for('admin.index'))
         else:
-            flash('ログインできませんでした')
+            flash('ログインできませんでした', category='error')
 
     return render_template('admin/login.html')
 
@@ -65,7 +65,7 @@ def username(user_id):
             return redirect(url_for('admin.update', user_id=user_id))
         
         except MyException as e:
-            flash(e.__str__())
+            flash(e.__str__(), category='error')
 
     user = read_user(user_id)
     return render_template('admin/users/username.html', user=user)
@@ -79,7 +79,7 @@ def email(user_id):
             return redirect(url_for('admin.update', user_id=user_id))
         
         except MyException as e:
-            flash(e.__str__())
+            flash(e.__str__(), category='error')
 
     user = read_user(user_id)
     return render_template('admin/users/email.html', user=user)
@@ -109,6 +109,6 @@ def settings():
         if set_config():
             return redirect(url_for('admin.index'))
         else:
-            flash('パスワードが違います')
+            flash('パスワードが違います', category='error')
 
     return render_template('admin/settings.html')

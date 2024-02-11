@@ -17,7 +17,7 @@ def register():
             return redirect(url_for('auth.login'))
         
         except MyException as e:
-            flash(e.__str__())
+            flash(e.__str__(), category='error')
 
     return render_template('user/auth/register.html')
 
@@ -29,7 +29,7 @@ def login():
             return redirect(url_for('index'))
 
         else:
-            flash('ログインできませんでした')
+            flash('ログインできませんでした', category='error')
 
     return render_template('user/auth/login.html')
 

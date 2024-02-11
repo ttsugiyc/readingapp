@@ -11,10 +11,16 @@
   <body class="bg-gray-200 font-body">
     <article class="max-w-6xl mx-auto p-1 space-y-2">
       <!-- flash -->
-      {% for message in get_flashed_messages() %}
-        <aside class="p-2 rounded bg-gray-200 border border-blue-500">
-          <p class="text-blue-500 text-center">{{ message }}</p>
-        </aside>
+      {% for category, message in get_flashed_messages(with_categories=true) %}
+        {% if category == 'error' %}
+          <aside class="p-2 rounded bg-gray-200 border border-red-500">
+            <p class="text-red-500 text-center">{{ message }}</p>
+          </aside>
+        {% else %}
+          <aside class="p-2 rounded bg-gray-200 border border-blue-500">
+            <p class="text-blue-500 text-center">{{ message }}</p>
+          </aside>
+        {% endif %}
       {% endfor %}
 
       {% block header %}{% endblock %}

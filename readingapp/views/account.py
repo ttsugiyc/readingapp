@@ -26,7 +26,7 @@ def username():
             return redirect(url_for('account.settings'))
 
         except MyException as e:
-            flash(e.__str__())
+            flash(e.__str__(), category='error')
 
     return render_template('user/account/username.html')
 
@@ -40,7 +40,7 @@ def email():
             return redirect(url_for('account.settings'))
 
         except MyException as e:
-            flash(e.__str__())
+            flash(e.__str__(), category='error')
 
     return render_template('user/account/email.html')
 
@@ -54,7 +54,7 @@ def password():
             return redirect(url_for('account.settings'))
 
         except MyException as e:
-            flash(e.__str__())
+            flash(e.__str__(), category='error')
 
     return render_template('user/account/password.html')
 
@@ -68,6 +68,6 @@ def delete():
             return redirect(url_for('auth.login'))
 
         except MyException as e:
-            flash(e.__str__())
+            flash(e.__str__(), category='error')
 
     return render_template('user/account/delete.html')
