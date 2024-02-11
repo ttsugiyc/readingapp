@@ -131,7 +131,7 @@ npm install
 ```
 flask --app readingapp run --debug
 ```
-デバッグモードでは Web ページを読み込む際, ファイルの更新が反映される.
+デバッグモードではファイルの更新が反映される. また, ユーザーページ下部に管理者ページへのリンクが現れる.
 
 ### Tailwind CSS の使用
 `/readingapp/templates` 以下を編集するときは, `tailwindcss` で以下のコマンドを実行し, CSS ファイルが自動で更新されるようにしておく.
