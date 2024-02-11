@@ -27,5 +27,7 @@ CREATE TABLE post (
   status INTEGER NOT NULL DEFAULT 0,
   created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   modified TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  UNIQUE (user_id, book_id)
+  UNIQUE (user_id, book_id),
+  FOREIGN KEY (user_id) REFERENCES user (id),
+  FOREIGN KEY (book_id) REFERENCES book (id)
 );
