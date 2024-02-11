@@ -93,8 +93,12 @@ def update(post_id):
     check_owner(post)
 
     if request.method == 'POST':
-        update_post(post_id)
-        return redirect(url_for('bookshelf.index'))
+        try:
+            update_post(post_id)
+            return redirect(url_for('bookshelf.index'))
+        
+        except MyException as e:
+            flash(e.__str__())
 
     return render_template('user/bookshelf/update.html', post=post)
 

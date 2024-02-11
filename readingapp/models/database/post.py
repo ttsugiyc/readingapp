@@ -40,7 +40,7 @@ def get_width(string: str):
 
 
 def validate_comment(comment: str):
-    if get_width(comment) <= 1000:
+    if not get_width(comment) <= 1000:
         raise MyException('コメントは1000文字以内で入力して下さい')
     return comment
 
