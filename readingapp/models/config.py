@@ -7,12 +7,15 @@ from flask import Flask, current_app, request
 from werkzeug.security import generate_password_hash, check_password_hash
 
 
-@click.command('init-pass')
-def init_pass_command():
-    """Clear the existing config file."""
+def init_pass():
     if os.path.isfile(current_app.config['CONFIG']):
         os.remove(current_app.config['CONFIG'])
 
+
+@click.command('init-pass')
+def init_pass_command():
+    """Clear the existing config file."""
+    init_pass()
     click.echo('Initialized the configuration.')
 
 
