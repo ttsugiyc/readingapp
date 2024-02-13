@@ -48,6 +48,7 @@ def update(user_id):
 
 
 @bp.route('/<int:user_id>/username', methods=('GET', 'POST',))
+@login_required_as_admin
 def username(user_id):
     if request.method == 'POST':
         try:
@@ -63,6 +64,7 @@ def username(user_id):
 
 
 @bp.route('/<int:user_id>/email', methods=('GET', 'POST',))
+@login_required_as_admin
 def email(user_id):
     if request.method == 'POST':
         try:
@@ -78,6 +80,7 @@ def email(user_id):
 
 
 @bp.route('/<int:user_id>/password', methods=('GET', 'POST',))
+@login_required_as_admin
 def password(user_id):
     if request.method == 'POST':
         update_user_password(user_id)
