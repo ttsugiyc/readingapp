@@ -23,9 +23,7 @@ def register_config(app: Flask, test_config=None):
     app.cli.add_command(init_pass_command)
     if test_config is None:
         is_loaded = app.config.from_file(app.config['CONFIG'], load=json.load, silent=True)
-        if is_loaded:
-            app.config['INITIAL_SETTINGS'] = False
-        else:
+        if not is_loaded:
             app.config.from_mapping(
                 SECRET_KEY = 'dev',
                 PASSWORD = generate_password_hash('admin')
