@@ -3,9 +3,9 @@ from flask import Blueprint, flash, redirect, render_template, request, url_for
 from readingapp.security import login_required, check_owner
 from readingapp.exceptions import MyException
 from readingapp.models.isbn import canonicalize_ISBN
+from readingapp.models.api import request_books
 from readingapp.models.database.post import create_post, read_post, update_post, delete_post, search_posts
 from readingapp.models.database.book import create_books, search_books
-from readingapp.models.api import request_books
 
 
 bp = Blueprint('bookshelf', __name__)
@@ -29,18 +29,24 @@ def get_books():
         infos = request_books(isbn_13)
         create_books(infos)
         books = search_books(isbn_13)
+    
+    if not books:
+        raise MyException('書籍情報を取得できませんでした')
 
     return books
 
 
 def get_books_from_api():
     """
-    データベースを検索せず、直接APIを利用
+    データベースを検索せず、直接APIを利用（未使用）
     """
     isbn_13 = canonicalize_ISBN(request.form.get('isbn'))
     infos = request_books(isbn_13)
     create_books(infos)
     books = search_books(isbn_13)
+    
+    if not books:
+        raise MyException('書籍情報を取得できませんでした')
 
     return books
 
@@ -51,10 +57,8 @@ def create():
     if request.method == 'POST':
         try:
             books = get_books()
-            if not books:
-                raise MyException('書籍情報を取得できませんでした')
 
-            elif len(books) == 1:
+            if len(books) == 1:
                 book_id = books.pop()['id']
                 return redirect(url_for('bookshelf.select', book_id=book_id))
 
