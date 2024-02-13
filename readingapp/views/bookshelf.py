@@ -1,7 +1,6 @@
-from flask import Blueprint, flash, g, redirect, render_template, request, url_for
-from werkzeug.exceptions import abort
+from flask import Blueprint, flash, redirect, render_template, request, url_for
 
-from readingapp.views.auth import login_required
+from readingapp.security import login_required, check_owner
 from readingapp.models.isbn import canonicalize_ISBN
 from readingapp.models.database.post import create_post, read_post, update_post, delete_post, search_posts
 from readingapp.models.database.book import create_books, search_books
@@ -78,18 +77,6 @@ def select(book_id):
         flash(e.__str__(), category='error')
 
     return redirect(url_for('bookshelf.index'))
-
-
-def check_owner(post):
-    """
-    投稿が存在するか、本人の物か確認する
-    直接リクエストされる可能性があるため
-    """
-    if post is None:
-        abort(404)
-
-    if post['user_id'] != g.user['id']:
-        abort(403)
 
 
 @bp.route('/<int:post_id>/update', methods=('GET', 'POST'))

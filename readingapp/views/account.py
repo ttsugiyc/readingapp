@@ -1,11 +1,11 @@
 from flask import Blueprint, flash, redirect, render_template, request, url_for
 
+from readingapp.security import login_required
 from readingapp.models.exceptions import MyException
 from readingapp.models.database.user import (
     update_username_by_self, update_user_email_by_self,
     update_user_password_by_self, delete_user_by_self
 )
-from readingapp.views.auth import login_required
 
 
 bp = Blueprint('account', __name__, url_prefix='/account')

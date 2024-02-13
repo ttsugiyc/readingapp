@@ -1,6 +1,4 @@
-import functools
-
-from flask import Blueprint, flash, g, redirect, render_template, request, session, url_for
+from flask import Blueprint, g, request, session, flash, redirect, render_template, url_for
 
 from readingapp.models.database.user import create_user, read_user, login_user
 from readingapp.models.exceptions import MyException
@@ -49,14 +47,3 @@ def logout():
     session.clear()
     flash('ログアウトしました')
     return redirect(url_for('auth.login'))
-
-
-def login_required(view):
-    @functools.wraps(view)
-    def wrapped_view(**kwargs):
-        if g.user is None:
-            return redirect(url_for('auth.login'))
-
-        return view(**kwargs)
-
-    return wrapped_view

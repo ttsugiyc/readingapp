@@ -1,8 +1,7 @@
-import functools
-
 from flask import Blueprint, flash, redirect, render_template, request, session, url_for, current_app
 from werkzeug.security import check_password_hash
 
+from readingapp.security import login_required_as_admin
 from readingapp.models.config import set_config
 from readingapp.models.exceptions import MyException
 from readingapp.models.database.user import (
@@ -12,16 +11,6 @@ from readingapp.models.database.user import (
 
 
 bp = Blueprint('admin', __name__, url_prefix='/admin')
-
-
-def login_required_as_admin(view):
-    @functools.wraps(view)
-    def wrapped_view(**kwargs):
-        if not session.get('admin'):
-            return redirect(url_for('admin.login'))
-
-        return view(**kwargs)
-    return wrapped_view
 
 
 @bp.route('/', methods=('GET', 'POST'))
