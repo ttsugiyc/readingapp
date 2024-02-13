@@ -8,7 +8,6 @@ def create_app(test_config=None):
     app = Flask(__name__)
     app.config.from_mapping(
         CONFIG = os.path.join(app.instance_path, 'config.json'),
-        DEFAULT_CONFIG = 'default.json',
         IMAGE_FOLDER = os.path.join(app.static_folder, 'img'),
         DATABASE = os.path.join(app.instance_path, 'db.sqlite'),
         TESTING = test_config is not None,

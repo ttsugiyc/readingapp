@@ -26,7 +26,10 @@ def register_config(app: Flask, test_config=None):
         if is_loaded:
             app.config['INITIAL_SETTINGS'] = False
         else:
-            app.config.from_file(app.config['DEFAULT_CONFIG'], load=json.load)
+            app.config.from_mapping(
+                SECRET_KEY = 'dev',
+                PASSWORD = generate_password_hash('admin')
+            )
             app.logger.warning('Starts with the initial configuration.')
 
     else:
