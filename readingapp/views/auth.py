@@ -1,7 +1,7 @@
 from flask import Blueprint, g, request, session, flash, redirect, render_template, url_for
 
+from readingapp.exceptions import MyException
 from readingapp.models.database.user import create_user, read_user, login_user
-from readingapp.models.exceptions import MyException
 
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')

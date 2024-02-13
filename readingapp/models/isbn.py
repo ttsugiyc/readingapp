@@ -1,6 +1,6 @@
 import re
 
-from readingapp.models.exceptions import MyException
+from readingapp.exceptions import MyException
 
 
 def calculate_check_digit_10(isbn_10):

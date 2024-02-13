@@ -3,8 +3,8 @@ import re
 from flask import request, g, session
 from werkzeug.security import generate_password_hash, check_password_hash
 
+from readingapp.exceptions import MyException, UniquenessError, PasswordError
 from readingapp.models.database.base import get_database
-from readingapp.models.exceptions import MyException, UniquenessError, PasswordError
 
 
 # def empty_to_none(string: str):

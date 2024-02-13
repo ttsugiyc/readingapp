@@ -2,8 +2,8 @@ from flask import Blueprint, flash, redirect, render_template, request, session,
 from werkzeug.security import check_password_hash
 
 from readingapp.security import login_required_as_admin
+from readingapp.exceptions import MyException
 from readingapp.models.config import set_config
-from readingapp.models.exceptions import MyException
 from readingapp.models.database.user import (
     read_user, search_user, delete_user,
     update_username, update_user_email, update_user_password

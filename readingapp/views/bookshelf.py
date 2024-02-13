@@ -1,11 +1,11 @@
 from flask import Blueprint, flash, redirect, render_template, request, url_for
 
 from readingapp.security import login_required, check_owner
+from readingapp.exceptions import MyException
 from readingapp.models.isbn import canonicalize_ISBN
 from readingapp.models.database.post import create_post, read_post, update_post, delete_post, search_posts
 from readingapp.models.database.book import create_books, search_books
 from readingapp.models.api import request_books
-from readingapp.models.exceptions import MyException
 
 
 bp = Blueprint('bookshelf', __name__)

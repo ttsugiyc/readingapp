@@ -3,8 +3,8 @@ import unicodedata
 from flask import g, request
 from werkzeug.exceptions import abort
 
+from readingapp.exceptions import MyException
 from readingapp.models.database.base import get_database
-from readingapp.models.exceptions import MyException
 
 
 def create_post(book_id):

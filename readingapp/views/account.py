@@ -1,7 +1,7 @@
 from flask import Blueprint, flash, redirect, render_template, request, url_for
 
 from readingapp.security import login_required
-from readingapp.models.exceptions import MyException
+from readingapp.exceptions import MyException
 from readingapp.models.database.user import (
     update_username_by_self, update_user_email_by_self,
     update_user_password_by_self, delete_user_by_self
