@@ -26,7 +26,7 @@ def create_app(test_config=None):
     #     return 'Hello!'
 
     # load modules
-    from .models.config import register_config
+    from .config import register_config
     register_config(app, test_config)
 
     from .models.database.base import register_database
