@@ -131,9 +131,9 @@ def update_user_password_by_self():
 
 def delete_user(user_id):
     db = get_database()
-    sql = 'DELETE FROM user WHERE id = ?'
-    db.execute(sql, (user_id,))
     sql = 'DELETE FROM post WHERE user_id = ?'
+    db.execute(sql, (user_id,))
+    sql = 'DELETE FROM user WHERE id = ?'
     db.execute(sql, (user_id,))
     db.commit()
 
