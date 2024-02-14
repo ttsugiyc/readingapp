@@ -6,6 +6,8 @@ import click
 from flask import Flask, current_app, request
 from werkzeug.security import generate_password_hash, check_password_hash
 
+from readingapp.exceptions import PasswordError
+
 
 def init_pass():
     if os.path.isfile(current_app.config['CONFIG']):
@@ -19,15 +21,19 @@ def init_pass_command():
     click.echo('Initialized the configuration.')
 
 
-def register_config(app: Flask, test_config=None):
-    app.cli.add_command(init_pass_command)
+def set_config(app: Flask, test_config=None):
+    app.config.from_mapping(
+        CONFIG = os.path.join(app.instance_path, 'config.json'),
+        IMAGE_FOLDER = os.path.join(app.static_folder, 'img'),
+        DATABASE = os.path.join(app.instance_path, 'db.sqlite'),
+        ADMIN_TOKEN = None,
+        SECRET_KEY = 'dev',
+        PASSWORD = generate_password_hash('admin'),
+    )
+
     if test_config is None:
         is_loaded = app.config.from_file(app.config['CONFIG'], load=json.load, silent=True)
         if not is_loaded:
-            app.config.from_mapping(
-                SECRET_KEY = 'dev',
-                PASSWORD = generate_password_hash('admin')
-            )
             app.logger.warning('Starts with the initial configuration.')
 
     else:
@@ -35,7 +41,19 @@ def register_config(app: Flask, test_config=None):
         app.logger.info('Starts with the test configuration.')
 
 
-def set_config():
+def register_config(app: Flask, test_config=None):
+    app.cli.add_command(init_pass_command)
+    set_config(app, test_config)
+
+    # ensure the instance/images folder exists
+    if not os.path.isdir(app.instance_path):
+        os.makedirs(app.instance_path)
+
+    if not os.path.isdir(app.config['IMAGE_FOLDER']):
+        os.makedirs(app.config['IMAGE_FOLDER'])
+
+
+def save_config():
     if check_password_hash(current_app.config['PASSWORD'], request.form['password']):
         config = {
             'SECRET_KEY': secrets.token_hex(),
@@ -44,6 +62,6 @@ def set_config():
 
         with open(current_app.config['CONFIG'], 'wt') as f:
             json.dump(config, f, indent=2)
-        return True
 
-    return False
+    else:
+        raise PasswordError

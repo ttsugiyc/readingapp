@@ -1,25 +1,9 @@
-import os
-
 from flask import Flask
 
 
 def create_app(test_config=None):
-    # create and configure the app
+    # create the app
     app = Flask(__name__)
-    app.config.from_mapping(
-        CONFIG = os.path.join(app.instance_path, 'config.json'),
-        IMAGE_FOLDER = os.path.join(app.static_folder, 'img'),
-        DATABASE = os.path.join(app.instance_path, 'db.sqlite'),
-        ADMIN_TOKEN = None,
-        TESTING = test_config is not None
-    )
-
-    # ensure the instance/images folder exists
-    if not os.path.isdir(app.instance_path):
-        os.makedirs(app.instance_path)
-
-    if not os.path.isdir(app.config['IMAGE_FOLDER']):
-        os.makedirs(app.config['IMAGE_FOLDER'])
 
     # load modules
     from .config import register_config
