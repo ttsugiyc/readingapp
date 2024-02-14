@@ -1,7 +1,7 @@
 from flask import Blueprint, flash, redirect, render_template, request, session, url_for, current_app
 from werkzeug.security import check_password_hash
 
-from readingapp.security import login_required_as_admin
+from readingapp.security import login_required_as_admin, protect_from_csrf
 from readingapp.exceptions import MyException
 from readingapp.config import set_config
 from readingapp.models.database.user import (
@@ -42,6 +42,7 @@ def logout():
 
 @bp.route('/<int:user_id>/update/')
 @login_required_as_admin
+@protect_from_csrf
 def update(user_id):
     user = read_user(user_id)
     return render_template('admin/users/update.html', user=user)
@@ -49,6 +50,7 @@ def update(user_id):
 
 @bp.route('/<int:user_id>/username', methods=('GET', 'POST',))
 @login_required_as_admin
+@protect_from_csrf
 def username(user_id):
     if request.method == 'POST':
         try:
@@ -65,6 +67,7 @@ def username(user_id):
 
 @bp.route('/<int:user_id>/email', methods=('GET', 'POST',))
 @login_required_as_admin
+@protect_from_csrf
 def email(user_id):
     if request.method == 'POST':
         try:
@@ -81,6 +84,7 @@ def email(user_id):
 
 @bp.route('/<int:user_id>/password', methods=('GET', 'POST',))
 @login_required_as_admin
+@protect_from_csrf
 def password(user_id):
     if request.method == 'POST':
         update_user_password(user_id)
@@ -93,6 +97,7 @@ def password(user_id):
 
 @bp.route('/<int:user_id>/delete', methods=('POST',))
 @login_required_as_admin
+@protect_from_csrf
 def delete(user_id):
     delete_user(user_id)
     flash('ユーザーを削除しました')
@@ -101,6 +106,7 @@ def delete(user_id):
 
 @bp.route('/settings', methods=('GET', 'POST'))
 @login_required_as_admin
+@protect_from_csrf
 def settings():
     if request.method == 'POST':
         if set_config():
