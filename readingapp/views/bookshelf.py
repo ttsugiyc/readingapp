@@ -57,11 +57,6 @@ def create():
     if request.method == 'POST':
         try:
             books = get_books()
-
-            if len(books) == 1:
-                book_id = books.pop()['id']
-                return redirect(url_for('bookshelf.select', book_id=book_id))
-
             return render_template('user/bookshelf/create.html', books=books)
 
         except MyException as e:
@@ -70,11 +65,11 @@ def create():
     return render_template('user/bookshelf/create.html', books=[])
 
 
-@bp.route('/<int:book_id>/select')
+@bp.route('/select', methods=('POST',))
 @login_required
-def select(book_id):
+def select():
     try:
-        create_post(book_id)
+        create_post()
         flash('書籍を追加しました')
 
     except MyException as e:

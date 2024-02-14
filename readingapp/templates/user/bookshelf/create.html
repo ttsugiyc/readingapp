@@ -29,7 +29,10 @@
   </header>
 
   <!-- 書籍リスト -->
-  <div class="w-full flex flex-col items-center gap-1">
+  <form
+    method="post" action="{{ url_for('bookshelf.select') }}"
+    class="w-full flex flex-col items-center gap-1"
+  >
     {% for book in books %}
       <section class="w-full md:max-w-lg md:min-h-48 border border-gray-300 rounded-md
         p-2 flex flex-col md:flex-row items-stretch gap-2"
@@ -61,16 +64,16 @@
             </p>
           {% endif %}
 
-          <a href="{{ url_for('bookshelf.select', book_id=book['id']) }}">
-            <p class="
-                w-28 h-9 rounded-full bg-teal-500 hover:bg-white
-                border border-teal-500 text-white hover:text-teal-500 flex items-center justify-center"
-            >
-              選択
-            </p>
-          </a>
+          <button
+            type="submit" name="book_id" value="{{ book['id'] }}"
+            class="
+              w-28 h-9 rounded-full bg-teal-500 hover:bg-white
+              border border-teal-500 text-white hover:text-teal-500 flex items-center justify-center"
+          >
+            選択
+          </button>
         </div>
       </section>
     {% endfor %}
-  </div>
+  </form>
 {% endblock %}

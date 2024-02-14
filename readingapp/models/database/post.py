@@ -7,11 +7,11 @@ from readingapp.exceptions import MyException
 from readingapp.models.database.base import get_database
 
 
-def create_post(book_id):
+def create_post():
     db = get_database()
     sql = 'INSERT INTO post (user_id, book_id) VALUES (?, ?)'
     try:
-        db.execute(sql, (g.user['id'], book_id))
+        db.execute(sql, (g.user['id'], request.form['book_id']))
         db.commit()
 
     except db.IntegrityError as e:
