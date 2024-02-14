@@ -63,5 +63,7 @@ def save_config():
         with open(current_app.config['CONFIG'], 'wt') as f:
             json.dump(config, f, indent=2)
 
+        current_app.config.from_mapping(config)
+
     else:
         raise PasswordError
