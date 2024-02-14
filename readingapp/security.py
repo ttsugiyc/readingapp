@@ -1,7 +1,7 @@
 import functools
 import secrets
 
-from flask import g, request, session, redirect, url_for
+from flask import current_app, g, request, session, redirect, url_for
 from werkzeug.exceptions import abort
 
 
@@ -19,7 +19,8 @@ def login_required(view):
 def login_required_as_admin(view):
     @functools.wraps(view)
     def wrapped_view(**kwargs):
-        if not session.get('admin'):
+        admin_token = current_app.config['ADMIN_TOKEN']
+        if admin_token is None or admin_token != session.get('admin'):
             return redirect(url_for('admin.login'))
 
         return view(**kwargs)

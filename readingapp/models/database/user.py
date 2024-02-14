@@ -3,7 +3,7 @@ import re
 from flask import request, g, session
 from werkzeug.security import generate_password_hash, check_password_hash
 
-from readingapp.exceptions import MyException, UniquenessError, PasswordError
+from readingapp.exceptions import MyException, UniquenessError, PasswordError, LoginError
 from readingapp.models.database.base import get_database
 
 
@@ -154,7 +154,7 @@ def login_as_user():
         session.clear()
         session['user_id'] = user['id']
     else:
-        raise MyException('ログインできませんでした')
+        raise LoginError()
 
 
 def search_user():

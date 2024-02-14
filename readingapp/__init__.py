@@ -10,6 +10,7 @@ def create_app(test_config=None):
         CONFIG = os.path.join(app.instance_path, 'config.json'),
         IMAGE_FOLDER = os.path.join(app.static_folder, 'img'),
         DATABASE = os.path.join(app.instance_path, 'db.sqlite'),
+        ADMIN_TOKEN = None,
         TESTING = test_config is not None
     )
 

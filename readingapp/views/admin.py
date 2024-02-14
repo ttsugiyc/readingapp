@@ -1,8 +1,10 @@
+import secrets
+
 from flask import Blueprint, flash, redirect, render_template, request, session, url_for, current_app
 from werkzeug.security import check_password_hash
 
 from readingapp.security import login_required_as_admin, protect_from_csrf
-from readingapp.exceptions import MyException
+from readingapp.exceptions import MyException, LoginError
 from readingapp.config import set_config
 from readingapp.models.database.user import (
     read_user, search_user, delete_user,
@@ -20,15 +22,27 @@ def index():
     return render_template('admin/users/index.html', users=users)
 
 
+def login_as_admin():
+    if check_password_hash(current_app.config['PASSWORD'], request.form['password']):
+        token = secrets.token_hex()
+        session.clear()
+        session['admin'] = token
+        current_app.config['ADMIN_TOKEN'] = token
+        return redirect(url_for('admin.index'))
+
+    else:
+        raise LoginError()
+
+
 @bp.route('/login', methods=('GET', 'POST'))
 def login():
     if request.method == 'POST':
-        if check_password_hash(current_app.config['PASSWORD'], request.form['password']):
-            session.clear()
-            session['admin'] = True
+        try:
+            login_as_admin()
             return redirect(url_for('admin.index'))
-        else:
-            flash('ログインできませんでした', category='error')
+
+        except MyException as e:
+            flash(e.__str__(), category='error')
 
     return render_template('admin/login.html')
 
@@ -36,6 +50,7 @@ def login():
 @bp.route('/logout')
 def logout():
     session.clear()
+    current_app.config['ADMIN_TOKEN'] = None
     flash('ログアウトしました')
     return redirect(url_for('admin.login'))
 
