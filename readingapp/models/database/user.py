@@ -23,7 +23,7 @@ def validate_username(username: str):
 
 
 def validate_email(email: str):
-    """文字幅32, ASCII"""
+    """文字幅32, ASCII, empty->None"""
     if not email:
         return None
 
