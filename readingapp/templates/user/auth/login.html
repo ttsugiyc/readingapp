@@ -12,12 +12,12 @@
     <h2 class="text-gray-700">ログイン</h2>
 
     <div class="w-full flex flex-col items-center gap-2">
-      <div class="w-full max-w-64">
+      <div class="w-full">
         <p class="px-1 text-sm text-gray-700">ユーザー名</p>
 
         <input type="text" name="username"
           class="
-            w-full h-9 max-w-64 px-4 border border-gray-300 rounded-md bg-white
+            w-full h-9 px-4 border border-gray-300 rounded-md bg-white
             focus:ring-2 focus:ring-gray-300 outline-none text-gray-700
           "
           value="{{ request.form['username'] }}"
@@ -25,12 +25,12 @@
         >
       </div>
 
-      <div class="w-full max-w-64">
+      <div class="w-full">
         <p class="px-1 text-sm text-gray-700">パスワード</p>
 
         <input type="password" name="password"
           class="
-            w-full h-9 max-w-64 px-4 border border-gray-300 rounded-md bg-white
+            w-full h-9 px-4 border border-gray-300 rounded-md bg-white
             focus:ring-2 focus:ring-gray-300 outline-none text-gray-700
           "
           required
