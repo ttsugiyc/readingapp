@@ -1,6 +1,7 @@
 import unicodedata
 
 from flask import g, request
+from werkzeug.exceptions import abort
 
 from readingapp.exceptions import MyException
 from readingapp.models.database.base import get_database
@@ -18,6 +19,8 @@ def create_post():
         if e.args == ('UNIQUE constraint failed: post.user_id, post.book_id',):
             raise MyException('登録済みの書籍です')
 
+        if e.args == ('FOREIGN KEY constraint failed',):
+            abort(404)
         raise e
 
 
