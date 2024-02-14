@@ -25,6 +25,8 @@
         hover:bg-gray-300 rounded-r-md outline-none text-center"
       >検索
       </button>
+
+      <input type="hidden" name="token" value="{{ session['token'] }}">
     </form>
   </header>
 
@@ -72,6 +74,8 @@
           >
             選択
           </button>
+
+          <input type="hidden" name="token" value="{{ session['token'] }}">
         </div>
       </section>
     {% endfor %}

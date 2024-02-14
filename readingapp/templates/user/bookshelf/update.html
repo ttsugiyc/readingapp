@@ -88,6 +88,8 @@
       "
       value="保存"
     >
+
+    <input type="hidden" name="token" value="{{ session['token'] }}">
   </form>
 
   <hr class="h-6">
@@ -102,5 +104,7 @@
       value="本棚から削除"
       onclick="return confirm('本当によろしいですか？');"
     >
+
+    <input type="hidden" name="token" value="{{ session['token'] }}">
   </form>
 {% endblock %}

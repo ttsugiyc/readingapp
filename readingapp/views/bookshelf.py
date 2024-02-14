@@ -1,6 +1,6 @@
 from flask import Blueprint, flash, redirect, render_template, request, url_for
 
-from readingapp.security import login_required, check_owner
+from readingapp.security import login_required, check_owner, protect_from_csrf
 from readingapp.exceptions import MyException
 from readingapp.models.isbn import canonicalize_ISBN
 from readingapp.models.api import request_books
@@ -53,6 +53,7 @@ def get_books_from_api():
 
 @bp.route('/create', methods=('GET', 'POST'))
 @login_required
+@protect_from_csrf
 def create():
     if request.method == 'POST':
         try:
@@ -67,6 +68,7 @@ def create():
 
 @bp.route('/select', methods=('POST',))
 @login_required
+@protect_from_csrf
 def select():
     try:
         create_post()
@@ -80,6 +82,7 @@ def select():
 
 @bp.route('/<int:post_id>/update', methods=('GET', 'POST'))
 @login_required
+@protect_from_csrf
 def update(post_id):
     post = read_post(post_id)
     check_owner(post)
@@ -98,6 +101,7 @@ def update(post_id):
 
 @bp.route('/<int:post_id>/delete', methods=('POST',))
 @login_required
+@protect_from_csrf
 def delete(post_id):
     post = read_post(post_id)
     check_owner(post)
