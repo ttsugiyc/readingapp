@@ -1,7 +1,7 @@
 from flask import Blueprint, g, request, session, flash, redirect, render_template, url_for
 
 from readingapp.exceptions import MyException
-from readingapp.models.database.user import create_user, read_user, login_user
+from readingapp.models.database.user import create_user, read_user, login_as_user
 
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
@@ -24,11 +24,12 @@ def register():
 @bp.route('/login', methods=('GET', 'POST'))
 def login():
     if request.method == 'POST':
-        if login_user():
+        try:
+            login_as_user()
             return redirect(url_for('index'))
 
-        else:
-            flash('ログインできませんでした', category='error')
+        except MyException as e:
+            flash(e.__str__(), category='error')
 
     return render_template('user/auth/login.html')
 

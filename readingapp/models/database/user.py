@@ -145,17 +145,16 @@ def delete_user_by_self():
         raise PasswordError()
 
 
-def login_user():
+def login_as_user():
     db = get_database()
     sql = 'SELECT * FROM user WHERE username = ?'
     user = db.execute(sql, (request.form.get('username'),)).fetchone()
 
-    session.clear()
     if user and check_password_hash(user['password'], request.form.get('password')):
+        session.clear()
         session['user_id'] = user['id']
-        return True
     else:
-        return False
+        raise MyException('ログインできませんでした')
 
 
 def search_user():

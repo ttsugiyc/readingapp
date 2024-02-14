@@ -23,8 +23,8 @@ def index():
 @bp.route('/login', methods=('GET', 'POST'))
 def login():
     if request.method == 'POST':
-        session.clear()
         if check_password_hash(current_app.config['PASSWORD'], request.form['password']):
+            session.clear()
             session['admin'] = True
             return redirect(url_for('admin.index'))
         else:
