@@ -53,5 +53,7 @@
       value="退会"
       onclick="return confirm('本当によろしいですか？');"
     >
+
+    <input type="hidden" name="token" value="{{ session['token'] }}">
   </form>
 {% endblock %}

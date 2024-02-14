@@ -1,6 +1,6 @@
 from flask import Blueprint, flash, redirect, render_template, request, url_for
 
-from readingapp.security import login_required
+from readingapp.security import login_required, protect_from_csrf
 from readingapp.exceptions import MyException
 from readingapp.models.database.user import (
     update_username_by_self, update_user_email_by_self,
@@ -19,6 +19,7 @@ def settings():
 
 @bp.route('/username', methods=('GET', 'POST'))
 @login_required
+@protect_from_csrf
 def username():
     if request.method == 'POST':
         try:
@@ -34,6 +35,7 @@ def username():
 
 @bp.route('/email', methods=('GET', 'POST'))
 @login_required
+@protect_from_csrf
 def email():
     if request.method == 'POST':
         try:
@@ -49,6 +51,7 @@ def email():
 
 @bp.route('/password', methods=('GET', 'POST'))
 @login_required
+@protect_from_csrf
 def password():
     if request.method == 'POST':
         try:
@@ -64,6 +67,7 @@ def password():
 
 @bp.route('/delete', methods=('GET', 'POST'))
 @login_required
+@protect_from_csrf
 def delete():
     if request.method == 'POST':
         try:
