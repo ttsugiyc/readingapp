@@ -21,11 +21,6 @@ def create_app(test_config=None):
     if not os.path.isdir(app.config['IMAGE_FOLDER']):
         os.makedirs(app.config['IMAGE_FOLDER'])
 
-    # a simple page that says hello
-    # @app.route('/hello')
-    # def hello():
-    #     return 'Hello!'
-
     # load modules
     from .config import register_config
     register_config(app, test_config)

@@ -7,11 +7,6 @@ from readingapp.exceptions import MyException, UniquenessError, PasswordError, L
 from readingapp.models.database.base import get_database
 
 
-# def empty_to_none(string: str):
-#     """Not Null制約を活用するため、空の文字列をNoneに変換"""
-#     return string if not string == '' else None
-
-
 def validate_username(username: str):
     """文字幅16, ASCII, Not-Null"""
     if not username:
