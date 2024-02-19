@@ -102,11 +102,10 @@ flask --app readingapp init-pass
 ### 環境構築
 事前に Python, SQLite, Node.js をインストールする. 
 
-プロジェクトフォルダを作成して, ターミナルで開く. 
-
 GitHub からリポジトリをクローンする.
 ```
 git clone https://github.com/ttsugiyc/readingapp
+cd readingapp
 ```
 
 Python 仮想環境を作成し, 起動する.
