@@ -37,21 +37,21 @@
 ### 環境構築
 事前に Python、SQLite をインストールして、配布ファイル（`/dist` にあるファイルのどちらか一方）をダウンロードしておく。
 
-プロジェクトフォルダを作成して、ターミナルで開く。
+作業フォルダを作成して、ターミナルで開く。
 
-Python 仮想環境を作成し、起動する。
+Python 仮想環境を作成して、起動する。
 ```
 py -m venv venv
 .\venv\Scripts\activate
 ```
 
-pip で配布ファイルを仮想環境にインストールする。
+配布ファイルを仮想環境にインストールする。
 ```
 pip install <配布ファイルのパス>
 ```
 
 ### 起動・停止
-以下のコマンドでアプリが起動する。
+アプリの起動は次のコマンドで行う。
 ```
 flask --app readingapp run
 ```
@@ -98,7 +98,7 @@ git clone https://github.com/ttsugiyc/readingapp
 cd readingapp
 ```
 
-Python 仮想環境を作成し、起動する。
+Python 仮想環境を作成して、起動する。
 ```
 py -m venv venv
 .\venv\Scripts\activate
@@ -116,19 +116,22 @@ npm install
 ```
 
 ### デバッグモード
-アプリをデバッグモードで起動する。
+アプリをデバッグモードで起動するには、次のコマンド。
 ```
 flask --app readingapp run --debug
 ```
-デバッグモードではファイルの更新が反映される。また、ユーザーページ下部に管理者ページへのリンクが現れる。
+デバッグモードではファイルの更新が反映される。また、ユーザーページ下部に管理者ページへのリンクが常に表示される。
 
 ### Tailwind CSS の使用
-`/readingapp/templates` 以下を編集するときは、`tailwindcss` で以下のコマンドを実行し、CSS ファイルが自動で更新されるようにしておく。
+`/readingapp/templates` 以下を編集するときは、`/tailwindcss` で以下のコマンドを実行し、CSS ファイルが自動で更新されるようにしておく。
 ```
 npx tailwindcss -i input.css -o ../readingapp/static/style.css --watch
 ```
 
+### テスト
+
 ### 配布ファイルの作成
+配布ファイルの更新は次のコマンド。
 ```
 py -m build
 ```
