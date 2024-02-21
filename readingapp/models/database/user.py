@@ -14,7 +14,7 @@ def validate_username(username: str):
 
     if not re.fullmatch('[\u0000-\u007F]+', username):
         char = re.search('[^\u0000-\u007F]', username).group()
-        raise MyException(f'ユーザー名に使用できない文字 "{char}" が含まれています')
+        raise MyException(f'ユーザー名に使用できない文字「{char}」が含まれています')
 
     if not len(username) <= 16:
         raise MyException('ユーザー名は16文字以内で入力して下さい')
@@ -29,7 +29,7 @@ def validate_email(email: str):
 
     if not re.fullmatch('[\u0000-\u007F]+', email):
         char = re.search('[^\u0000-\u007F]', email).group()
-        raise MyException(f'メールアドレスに使用できない文字 "{char}" が含まれています')
+        raise MyException(f'メールアドレスに使用できない文字「{char}」が含まれています')
 
     if not len(email) <= 30:
         raise MyException('メールアドレスは30文字以内で入力して下さい')
