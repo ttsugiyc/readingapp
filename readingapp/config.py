@@ -29,6 +29,7 @@ def set_config(app: Flask, test_config=None):
         ADMIN_TOKEN = None,
         SECRET_KEY = 'dev',
         PASSWORD = generate_password_hash('admin'),
+        TESTING = test_config is not None,
     )
 
     if test_config is None:

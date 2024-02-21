@@ -1,7 +1,10 @@
 import os
+import shutil
 import tempfile
 
 import pytest
+from flask import Flask
+
 from readingapp import create_app
 from readingapp.models.database.base import get_database, init_data
 
@@ -12,12 +15,14 @@ with open(os.path.join(os.path.dirname(__file__), 'data.sql'), 'rb') as f:
 
 @pytest.fixture
 def app():
+    conf_fd, conf_path = tempfile.mkstemp()
+    img_path = tempfile.mkdtemp()
     db_fd, db_path = tempfile.mkstemp()
 
     app = create_app({
+        'CONFIG': conf_path,
+        'IMAGE_FOLDER': img_path,
         'DATABASE': db_path,
-        'IMAGE_FOLDER': os.path.join(os.path.dirname(__file__), 'static', 'img'),
-        'CONFIG': os.path.join(os.path.dirname(__file__), 'test_config.json')
     })
 
     with app.app_context():
@@ -26,15 +31,18 @@ def app():
 
     yield app
 
+    os.close(conf_fd)
+    os.unlink(conf_path)
+    shutil.rmtree(img_path)
     os.close(db_fd)
     os.unlink(db_path)
 
 
 @pytest.fixture
-def client(app):
+def client(app: Flask):
     return app.test_client()
 
 
 @pytest.fixture
-def runner(app):
+def runner(app: Flask):
     return app.test_cli_runner()
