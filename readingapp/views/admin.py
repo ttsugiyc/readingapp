@@ -5,7 +5,7 @@ from werkzeug.security import check_password_hash
 
 from readingapp.security import login_required_as_admin, protect_from_csrf
 from readingapp.exceptions import MyException, LoginError
-from readingapp.config import save_config
+from readingapp.config import change_pass
 from readingapp.models.database.user import (
     read_user, search_user, delete_user,
     update_username, update_user_email, update_user_password
@@ -125,7 +125,7 @@ def delete(user_id):
 def settings():
     if request.method == 'POST':
         try:
-            save_config()
+            change_pass()
             flash('設定を変更しました')
             return redirect(url_for('admin.index'))
 

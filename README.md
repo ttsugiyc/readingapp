@@ -129,6 +129,10 @@ npx tailwindcss -i input.css -o ../readingapp/static/style.css --watch
 ```
 
 ### テスト
+```
+coverage run -m pytest
+coverage report
+```
 
 ### 配布ファイルの作成
 配布ファイルの更新は次のコマンド。
