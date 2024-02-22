@@ -1,6 +1,6 @@
 from flask import Blueprint, flash, redirect, render_template, request, url_for
 
-from readingapp.security import login_required, check_owner, protect_from_csrf
+from readingapp.security import login_required, check_owner, issue_csrf_token, catch_csrf_token
 from readingapp.exceptions import MyException
 from readingapp.models.isbn import canonicalize_ISBN
 from readingapp.models.api import request_books
@@ -53,9 +53,9 @@ def get_books_from_api():
 
 @bp.route('/create', methods=('GET', 'POST'))
 @login_required
-@protect_from_csrf
 def create():
     if request.method == 'POST':
+        catch_csrf_token()
         try:
             books = get_books()
             return render_template('user/bookshelf/create.html', books=books)
@@ -63,13 +63,14 @@ def create():
         except MyException as e:
             flash(e.__str__(), category='error')
 
+    issue_csrf_token()
     return render_template('user/bookshelf/create.html', books=[])
 
 
 @bp.route('/select', methods=('POST',))
 @login_required
-@protect_from_csrf
 def select():
+    catch_csrf_token()
     try:
         create_post()
         flash('書籍を追加しました')
@@ -82,12 +83,12 @@ def select():
 
 @bp.route('/<int:post_id>/update', methods=('GET', 'POST'))
 @login_required
-@protect_from_csrf
 def update(post_id):
     post = read_post(post_id)
     check_owner(post)
 
     if request.method == 'POST':
+        catch_csrf_token()
         try:
             update_post(post_id)
             flash('読書記録を更新しました')
@@ -96,13 +97,14 @@ def update(post_id):
         except MyException as e:
             flash(e.__str__(), category='error')
 
+    issue_csrf_token()
     return render_template('user/bookshelf/update.html', post=post)
 
 
 @bp.route('/<int:post_id>/delete', methods=('POST',))
 @login_required
-@protect_from_csrf
 def delete(post_id):
+    catch_csrf_token()
     post = read_post(post_id)
     check_owner(post)
     delete_post(post_id)

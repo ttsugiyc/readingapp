@@ -3,7 +3,7 @@ import secrets
 from flask import Blueprint, flash, redirect, render_template, request, session, url_for, current_app
 from werkzeug.security import check_password_hash
 
-from readingapp.security import login_required_as_admin, protect_from_csrf
+from readingapp.security import login_required_as_admin, issue_csrf_token, catch_csrf_token
 from readingapp.exceptions import MyException, LoginError
 from readingapp.config import change_pass
 from readingapp.models.database.user import (
@@ -57,17 +57,17 @@ def logout():
 
 @bp.route('/<int:user_id>/update/')
 @login_required_as_admin
-@protect_from_csrf
 def update(user_id):
     user = read_user(user_id)
+    issue_csrf_token()
     return render_template('admin/users/update.html', user=user)
 
 
 @bp.route('/<int:user_id>/username', methods=('GET', 'POST',))
 @login_required_as_admin
-@protect_from_csrf
 def username(user_id):
     if request.method == 'POST':
+        catch_csrf_token()
         try:
             update_username(user_id)
             flash('ユーザー名を変更しました')
@@ -77,14 +77,15 @@ def username(user_id):
             flash(e.__str__(), category='error')
 
     user = read_user(user_id)
+    issue_csrf_token()
     return render_template('admin/users/username.html', user=user)
 
 
 @bp.route('/<int:user_id>/email', methods=('GET', 'POST',))
 @login_required_as_admin
-@protect_from_csrf
 def email(user_id):
     if request.method == 'POST':
+        catch_csrf_token()
         try:
             update_user_email(user_id)
             flash('メールアドレスを変更しました')
@@ -94,26 +95,28 @@ def email(user_id):
             flash(e.__str__(), category='error')
 
     user = read_user(user_id)
+    issue_csrf_token()
     return render_template('admin/users/email.html', user=user)
 
 
 @bp.route('/<int:user_id>/password', methods=('GET', 'POST',))
 @login_required_as_admin
-@protect_from_csrf
 def password(user_id):
     if request.method == 'POST':
+        catch_csrf_token()
         update_user_password(user_id)
         flash('パスワードを変更しました')
         return redirect(url_for('admin.update', user_id=user_id))
 
     user = read_user(user_id)
+    issue_csrf_token()
     return render_template('admin/users/password.html', user=user)
 
 
 @bp.route('/<int:user_id>/delete', methods=('POST',))
 @login_required_as_admin
-@protect_from_csrf
 def delete(user_id):
+    catch_csrf_token()
     delete_user(user_id)
     flash('ユーザーを削除しました')
     return redirect(url_for('admin.index'))
@@ -121,9 +124,9 @@ def delete(user_id):
 
 @bp.route('/settings', methods=('GET', 'POST'))
 @login_required_as_admin
-@protect_from_csrf
 def settings():
     if request.method == 'POST':
+        catch_csrf_token()
         try:
             change_pass()
             flash('設定を変更しました')
@@ -132,4 +135,5 @@ def settings():
         except MyException as e:
             flash(e.__str__(), category='error')
 
+    issue_csrf_token()
     return render_template('admin/settings.html')

@@ -39,14 +39,10 @@ def check_owner(post):
         abort(403)
 
 
-def protect_from_csrf(view):
-    @functools.wraps(view)
-    def wrapped_view(**kwargs):
-        if request.method == 'POST':
-            if request.form.get('token') != session.pop('token'):
-                abort(400)
+def issue_csrf_token():
+    session['token'] = secrets.token_hex()
 
-        session['token'] = secrets.token_hex()
-        return view(**kwargs)
 
-    return wrapped_view
+def catch_csrf_token():
+    if request.form.get('token') != session.pop('token'):
+        abort(400)
