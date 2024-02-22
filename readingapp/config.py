@@ -33,8 +33,10 @@ def init_pass_command():
     click.echo('Initialized the configuration.')
 
 
-def set_config(app: Flask, test_config=None):
-    # 基本設定→設定ファイル読込→テスト設定読込
+def register_config(app: Flask, test_config=None):
+    # コマンド追加→基本設定→設定ファイル読込→テスト設定読込
+    app.cli.add_command(init_pass_command)
+
     app.config.from_mapping(
         CONFIG = os.path.join(app.instance_path, 'config.json'),
         IMAGE_FOLDER = os.path.join(app.static_folder, 'img'),
@@ -42,6 +44,12 @@ def set_config(app: Flask, test_config=None):
         ADMIN_TOKEN = None,
         TESTING = test_config is not None,
     )
+    # ensure the instance folder exists
+    if not os.path.isdir(app.instance_path):
+        os.makedirs(app.instance_path)
+
+    if not os.path.isdir(app.config['IMAGE_FOLDER']):
+        os.makedirs(app.config['IMAGE_FOLDER'])
 
     if os.path.isfile(app.config['CONFIG']):
         app.config.from_file(app.config['CONFIG'], load=json.load)
@@ -51,19 +59,6 @@ def set_config(app: Flask, test_config=None):
 
     if test_config:
         app.config.from_mapping(test_config)
-
-
-def register_config(app: Flask, test_config=None):
-    # コマンド追加→設定読み込み
-    app.cli.add_command(init_pass_command)
-    set_config(app, test_config)
-
-    # ensure the instance/images folder exists
-    if not os.path.isdir(app.instance_path):
-        os.makedirs(app.instance_path)
-
-    if not os.path.isdir(app.config['IMAGE_FOLDER']):
-        os.makedirs(app.config['IMAGE_FOLDER'])
 
 
 def change_pass():

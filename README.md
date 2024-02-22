@@ -129,6 +129,7 @@ npx tailwindcss -i input.css -o ../readingapp/static/style.css --watch
 ```
 
 ### テスト
+テストを実行して網羅率を表示するには、以下のコマンド。
 ```
 coverage run -m pytest
 coverage report
