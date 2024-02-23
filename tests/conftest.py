@@ -3,10 +3,10 @@ import shutil
 import tempfile
 
 import pytest
-from flask import Flask
+import flask
 
-from readingapp import create_app
-from readingapp.models.database.base import get_database, init_data
+import readingapp
+from readingapp.models.database import base
 
 
 with open(os.path.join(os.path.dirname(__file__), 'data.sql'), 'rb') as f:
@@ -19,15 +19,15 @@ def app():
     img_path = tempfile.mkdtemp()
     db_fd, db_path = tempfile.mkstemp()
 
-    app = create_app({
+    app = readingapp.create_app({
         'CONFIG': conf_path,
         'IMAGE_FOLDER': img_path,
         'DATABASE': db_path,
     })
 
     with app.app_context():
-        init_data()
-        get_database().executescript(_data_sql)
+        base.init_data()
+        base.get_database().executescript(_data_sql)
 
     yield app
 
@@ -39,12 +39,12 @@ def app():
 
 
 @pytest.fixture
-def client(app: Flask):
+def client(app: flask.Flask):
     return app.test_client()
 
 
 @pytest.fixture
-def runner(app: Flask):
+def runner(app: flask.Flask):
     return app.test_cli_runner()
 
 

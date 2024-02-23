@@ -5,8 +5,11 @@ VALUES
 
 INSERT INTO book (title, isbn_13, authors, publisher, image_name)
 VALUES
-  ('test title', '0123456789012', 'test authors', 'test publisher', 'test_image');
+  ('title1', '0123456789012', 'authors1', 'publisher1', 'image1'),
+  ('title2', '0123456789013', 'authors2', 'publisher2', 'image2');
 
-INSERT INTO post (user_id, book_id, comment, status, created, modified)
+INSERT INTO post (user_id, book_id, comment, status)
 VALUES
-  (1, 1, 'test' || x'0a' || 'comment', 1, '2018-01-01 00:00:00', '2018-01-01 00:00:00');
+  (1, 1, 'test' || x'0a' || 'comment', 1),
+  (1, 2, 'comment2', 0),
+  (2, 1, 'other_comment', 0);

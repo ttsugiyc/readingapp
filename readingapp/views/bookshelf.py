@@ -58,6 +58,7 @@ def create():
         catch_csrf_token()
         try:
             books = get_books()
+            issue_csrf_token()
             return render_template('user/bookshelf/create.html', books=books)
 
         except MyException as e:

@@ -44,5 +44,5 @@ def issue_csrf_token():
 
 
 def catch_csrf_token():
-    if request.form.get('token') != session.pop('token'):
+    if request.form.get('token') != session.get('token'):
         abort(400)
