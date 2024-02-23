@@ -72,7 +72,11 @@ def translate_response(response, isbn_13):
     return books
 
 
-def request_books(isbn_13):
+def use_api(isbn_13):
     url = f'https://www.googleapis.com/books/v1/volumes?q=isbn:{isbn_13}'
-    response = requests.get(url).json()
+    return requests.get(url).json()
+
+
+def request_books(isbn_13):
+    response = use_api(isbn_13)
     return translate_response(response, isbn_13)

@@ -36,19 +36,19 @@ def get_books():
     return books
 
 
-def get_books_from_api():
-    """
-    データベースを検索せず、直接APIを利用（未使用）
-    """
-    isbn_13 = canonicalize_ISBN(request.form.get('isbn'))
-    infos = request_books(isbn_13)
-    create_books(infos)
-    books = search_books(isbn_13)
+# def get_books_from_api():
+#     """
+#     データベースを検索せず、直接APIを利用（未使用）
+#     """
+#     isbn_13 = canonicalize_ISBN(request.form.get('isbn'))
+#     infos = request_books(isbn_13)
+#     create_books(infos)
+#     books = search_books(isbn_13)
     
-    if not books:
-        raise MyException('書籍情報を取得できませんでした')
+#     if not books:
+#         raise MyException('書籍情報を取得できませんでした')
 
-    return books
+#     return books
 
 
 @bp.route('/create', methods=('GET', 'POST'))

@@ -59,7 +59,7 @@ def update_post(post_id):
     )
     params = (
         validate_comment(request.form.get('comment')),
-        'status' in request.form,
+        request.form.get('status') == 'finished',
         post_id
     )
     db.execute(sql, params)

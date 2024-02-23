@@ -1,0 +1,72 @@
+{
+  "kind": "books#volumes",
+  "totalItems": 1,
+  "items": [
+    {
+      "kind": "books#volume",
+      "id": "9VD5QwAACAAJ",
+      "etag": "snnDoyzMSsU",
+      "selfLink": "https://www.googleapis.com/books/v1/volumes/9VD5QwAACAAJ",
+      "volumeInfo": {
+        "title": "鏡の国のアリス",
+        "authors": [
+          "ルイス・キャロル"
+        ],
+        "publisher": "Kadokawa Shoten/Tsai Fong Books",
+        "publishedDate": "2010-02",
+        "description": "「不思議の国」から半年後の雪の日。子ネコのキティとおしゃべりを楽しんでいたアリスは、暖炉の上の鏡をくぐり抜けてしまいます。なんとそこは、赤白のキングやクイーン、ナイトらの住むチェスの世界。さらには、おしゃべりする花々や卵のハンプティ・ダンプティも集い...おのずとチェスゲームに参加したアリスは、女王を目指すのですが...。ジョン・テニエルの美しいオリジナル挿絵を全点収録、永遠の名作童話の決定版。",
+        "industryIdentifiers": [
+          {
+            "type": "ISBN_10",
+            "identifier": "4042118046"
+          },
+          {
+            "type": "ISBN_13",
+            "identifier": "9784042118046"
+          }
+        ],
+        "readingModes": {
+          "text": false,
+          "image": false
+        },
+        "pageCount": 238,
+        "printType": "BOOK",
+        "maturityRating": "NOT_MATURE",
+        "allowAnonLogging": false,
+        "contentVersion": "preview-1.0.0",
+        "imageLinks": {
+          "smallThumbnail": "http://books.google.com/books/content?id=9VD5QwAACAAJ&printsec=frontcover&img=1&zoom=5&source=gbs_api",
+          "thumbnail": "http://books.google.com/books/content?id=9VD5QwAACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api"
+        },
+        "language": "ja",
+        "previewLink": "http://books.google.co.jp/books?id=9VD5QwAACAAJ&dq=isbn:9784042118046&hl=&cd=1&source=gbs_api",
+        "infoLink": "http://books.google.co.jp/books?id=9VD5QwAACAAJ&dq=isbn:9784042118046&hl=&source=gbs_api",
+        "canonicalVolumeLink": "https://books.google.com/books/about/%E9%8F%A1%E3%81%AE%E5%9B%BD%E3%81%AE%E3%82%A2%E3%83%AA%E3%82%B9.html?hl=&id=9VD5QwAACAAJ"
+      },
+      "saleInfo": {
+        "country": "JP",
+        "saleability": "NOT_FOR_SALE",
+        "isEbook": false
+      },
+      "accessInfo": {
+        "country": "JP",
+        "viewability": "NO_PAGES",
+        "embeddable": false,
+        "publicDomain": false,
+        "textToSpeechPermission": "ALLOWED",
+        "epub": {
+          "isAvailable": false
+        },
+        "pdf": {
+          "isAvailable": false
+        },
+        "webReaderLink": "http://play.google.com/books/reader?id=9VD5QwAACAAJ&hl=&source=gbs_api",
+        "accessViewStatus": "NONE",
+        "quoteSharingAllowed": false
+      },
+      "searchInfo": {
+        "textSnippet": "「不思議の国」から半年後の雪の日。子ネコのキティとおしゃべりを楽しんでいたアリスは、暖炉の上の鏡をくぐり抜けてしまいます。なんとそこは、赤白のキングやクイーン、 ..."
+      }
+    }
+  ]
+}
