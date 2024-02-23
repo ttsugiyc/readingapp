@@ -4,13 +4,29 @@ import secrets
 from flask import current_app, g, request, session, redirect, url_for
 from werkzeug.exceptions import abort
 
+from readingapp.models.database.user import read_user
+
+
+def protect_from_csrf():
+    if request.method == 'POST':
+        if request.form.get('token') != session.get('token'):
+            abort(401)
+
+    session['token'] = secrets.token_hex()
+
 
 def login_required(view):
     @functools.wraps(view)
     def wrapped_view(**kwargs):
+        user_id = session.get('user_id')
+        if user_id is None:
+            return redirect(url_for('auth.login'))
+
+        g.user = read_user(user_id)
         if g.user is None:
             return redirect(url_for('auth.login'))
 
+        protect_from_csrf()
         return view(**kwargs)
 
     return wrapped_view
@@ -23,7 +39,9 @@ def login_required_as_admin(view):
         if admin_token is None or admin_token != session.get('admin'):
             return redirect(url_for('admin.login'))
 
+        protect_from_csrf()
         return view(**kwargs)
+
     return wrapped_view
 
 
@@ -37,12 +55,3 @@ def check_owner(post):
 
     if post['user_id'] != g.user['id']:
         abort(403)
-
-
-def issue_csrf_token():
-    session['token'] = secrets.token_hex()
-
-
-def catch_csrf_token():
-    if request.form.get('token') != session.get('token'):
-        abort(400)

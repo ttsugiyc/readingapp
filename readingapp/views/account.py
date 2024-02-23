@@ -1,6 +1,6 @@
 from flask import Blueprint, flash, redirect, render_template, request, url_for
 
-from readingapp.security import login_required, issue_csrf_token, catch_csrf_token
+from readingapp.security import login_required
 from readingapp.exceptions import MyException
 from readingapp.models.database.user import (
     update_username_by_self, update_user_email_by_self,
@@ -21,7 +21,6 @@ def settings():
 @login_required
 def username():
     if request.method == 'POST':
-        catch_csrf_token()
         try:
             update_username_by_self()
             flash('ユーザー名を変更しました')
@@ -30,7 +29,6 @@ def username():
         except MyException as e:
             flash(e.__str__(), category='error')
 
-    issue_csrf_token()
     return render_template('user/account/username.html')
 
 
@@ -38,7 +36,6 @@ def username():
 @login_required
 def email():
     if request.method == 'POST':
-        catch_csrf_token()
         try:
             update_user_email_by_self()
             flash('メールアドレスを変更しました')
@@ -47,7 +44,6 @@ def email():
         except MyException as e:
             flash(e.__str__(), category='error')
 
-    issue_csrf_token()
     return render_template('user/account/email.html')
 
 
@@ -55,7 +51,6 @@ def email():
 @login_required
 def password():
     if request.method == 'POST':
-        catch_csrf_token()
         try:
             update_user_password_by_self()
             flash('パスワードを変更しました')
@@ -64,7 +59,6 @@ def password():
         except MyException as e:
             flash(e.__str__(), category='error')
 
-    issue_csrf_token()
     return render_template('user/account/password.html')
 
 
@@ -72,7 +66,6 @@ def password():
 @login_required
 def delete():
     if request.method == 'POST':
-        catch_csrf_token()
         try:
             delete_user_by_self()
             flash('アカウントを削除しました')
@@ -81,5 +74,4 @@ def delete():
         except MyException as e:
             flash(e.__str__(), category='error')
 
-    issue_csrf_token()
     return render_template('user/account/delete.html')

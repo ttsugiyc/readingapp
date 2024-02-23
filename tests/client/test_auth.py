@@ -43,3 +43,5 @@ def test_logout(client: flask.Flask, auth):
     with client:
         auth.logout()
         assert 'user_id' not in flask.session
+        assert 'admin' not in flask.session
+        assert 'token' not in flask.session

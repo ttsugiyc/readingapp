@@ -1,7 +1,7 @@
-from flask import Blueprint, g, request, session, flash, redirect, render_template, url_for
+from flask import Blueprint, request, session, flash, redirect, render_template, url_for
 
 from readingapp.exceptions import MyException
-from readingapp.models.database.user import create_user, read_user, login_as_user
+from readingapp.models.database.user import create_user, login_as_user
 
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
@@ -32,15 +32,6 @@ def login():
             flash(e.__str__(), category='error')
 
     return render_template('user/auth/login.html')
-
-
-@bp.before_app_request
-def load_logged_in():
-    user_id = session.get('user_id')
-    if user_id is None:
-        g.user = None
-    else:
-        g.user = read_user(user_id)
 
 
 @bp.route('/logout')

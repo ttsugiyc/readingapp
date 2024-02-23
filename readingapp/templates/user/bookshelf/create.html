@@ -74,10 +74,9 @@
           >
             選択
           </button>
-
-          <input type="hidden" name="token" value="{{ session['token'] }}">
         </div>
       </section>
     {% endfor %}
+    <input type="hidden" name="token" value="{{ session['token'] }}">
   </form>
 {% endblock %}
