@@ -25,7 +25,7 @@ def test_login_required_post(client: testing.FlaskClient, path):
     assert response.headers["Location"] == "/auth/login"
 
 
-def test_index(client: testing.FlaskClient, auth):
+def test_index_get(client: testing.FlaskClient, auth):
     auth.login()
     response = client.get('/')
     assert 'ログアウト'.encode() in response.data
@@ -37,6 +37,30 @@ def test_index(client: testing.FlaskClient, auth):
     assert b'test\ncomment' in response.data
     assert b'src="/static/img/image1"' in response.data
     assert b'href="/1/update"' in response.data
+    assert b'title2' in response.data
+
+
+@pytest.mark.parametrize(('region', 'status', 'keyword'), (
+    ('all', 'all', '1'),
+    ('title', 'all', 'title1'),
+    ('authors', 'all', 'authors1'),
+    ('publisher', 'all', 'publisher1'),
+    ('comment', 'all', 'comment1'),
+    ('all', 'finished', ''),
+))
+def test_index_post(client: testing.FlaskClient, auth, region, status, keyword):
+    auth.login()
+    with client:
+        client.get('/')
+        response = client.post(
+            '/',
+            data={
+                'sort': 'modified', 'region': region, 'status': status,
+                'keyword': keyword, 'token': flask.session['token']
+            }
+        )
+        assert b'title1' in response.data
+        assert b'title2' not in response.data
 
 
 def test_owner_required(client: testing.FlaskClient, auth):

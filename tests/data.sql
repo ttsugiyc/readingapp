@@ -10,6 +10,6 @@ VALUES
 
 INSERT INTO post (user_id, book_id, comment, status)
 VALUES
-  (1, 1, 'test' || x'0a' || 'comment', 1),
+  (1, 1, 'test' || x'0a' || 'comment1', 1),
   (1, 2, 'comment2', 0),
   (2, 1, 'other_comment', 0);
