@@ -28,7 +28,6 @@ def login_as_admin():
         session.clear()
         session['admin'] = token
         current_app.config['ADMIN_TOKEN'] = token
-        return redirect(url_for('admin.index'))
 
     else:
         raise LoginError()
