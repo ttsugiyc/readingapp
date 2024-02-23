@@ -18,11 +18,11 @@ def test_register(app: flask.Flask, client: testing.FlaskClient, username, email
         '/auth/register',
         data={'username': username, 'email': email, 'password': password}
     )
-    assert response.headers["Location"] == "/auth/login"
+    assert response.headers['Location'] == '/auth/login'
 
     with app.app_context():
         assert base.get_database().execute(
-            "SELECT * FROM user WHERE username = ?",
+            'SELECT * FROM user WHERE username = ?',
             (username,)
         ).fetchone() is not None
 
@@ -39,12 +39,26 @@ def test_register(app: flask.Flask, client: testing.FlaskClient, username, email
 
     ('a', 'a@a', '', 'パスワードを入力して下さい'.encode()),
 ))
-def test_register_validate_input(client: flask.Flask, username, email, password, message):
+def test_register_validate_input(client: testing.FlaskClient, username, email, password, message):
     response = client.post(
         '/auth/register',
         data={'username': username, 'email': email, 'password': password}
     )
+    assert response.status_code == 200
     assert message in response.data
+
+
+def test_login(client: testing.FlaskClient):
+    assert client.get('/auth/login').status_code == 200
+
+
+def test_login_failed(client: testing.FlaskClient):
+    response = client.post(
+        '/auth/login',
+        data={'username': 'a', 'password': 'a'}
+    )
+    assert response.status_code == 200
+    assert 'ログインできませんでした'.encode() in response.data
 
 
 def test_logout(client: flask.Flask, auth):

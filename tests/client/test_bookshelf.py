@@ -7,14 +7,21 @@ from flask import testing
     '/',
     '/create',
     '/1/update',
-    '/account/settings',
-    '/account/username',
-    '/account/email',
-    '/account/password',
-    '/account/delete',
 ))
-def test_login_required_for_get(client: testing.FlaskClient, path):
+def test_login_required_get(client: testing.FlaskClient, path):
     response = client.get(path)
+    assert response.headers["Location"] == "/auth/login"
+
+
+@pytest.mark.parametrize('path', (
+    '/',
+    '/create',
+    '/select',
+    '/1/update',
+    '/1/delete',
+))
+def test_login_required_post(client: testing.FlaskClient, path):
+    response = client.post(path)
     assert response.headers["Location"] == "/auth/login"
 
 
