@@ -27,7 +27,9 @@ def test_register(app: flask.Flask, client: testing.FlaskClient):
 
     ('b', 'あ@b', 'b', 'メールアドレスに使用できない文字「あ」が含まれています'.encode()),
     ('b', '01234567890123456789@0123456789', 'b', 'メールアドレスは30文字以内で入力して下さい'.encode()),
-    ('b', 't@t', 'b', 'そのメールアドレスは既に使用されています'.encode()),
+    ('b', 'test@test', 'b', 'そのメールアドレスは既に使用されています'.encode()),
+
+    ('b', 'b@b', '', 'パスワードを入力して下さい'.encode()),
 ))
 def test_register_validate_input(client: flask.Flask, username, email, password, message):
     response = client.post(

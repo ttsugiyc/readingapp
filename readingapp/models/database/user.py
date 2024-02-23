@@ -37,12 +37,20 @@ def validate_email(email: str):
     return email
 
 
+def validate_password(password: str):
+    """Not-Null, password->hash"""
+    if not password:
+        raise MyException('パスワードを入力して下さい')
+
+    return generate_password_hash(password)
+
+
 def create_user():
     sql = 'INSERT INTO user (username, email, password) VALUES (?, ?, ?)'
     params = (
         validate_username(request.form.get('username')),
         validate_email(request.form.get('email')),
-        generate_password_hash(request.form.get('password'))
+        validate_password(request.form.get('password'))
     )
     db = get_database()
     try:
@@ -98,7 +106,7 @@ def update_user_email(user_id):
 def update_user_password(user_id):
     sql = 'UPDATE user SET password = ? WHERE id = ?'
     db = get_database()
-    new_password = generate_password_hash(request.form.get('new_password'))
+    new_password = validate_password(request.form.get('new_password'))
     db.execute(sql, (new_password, user_id))
     db.commit()
 
