@@ -123,10 +123,10 @@ def test_create(client: testing.FlaskClient, auth, monkeypatch, book_id, isbn, t
         ('0', 'ISBN コードが正しくありません'.encode()),
         ('0000000000000', '書籍情報を取得できませんでした'.encode()),
         ('0000000000001', 'ISBN コードが正しくありません'.encode()),
-        ('000000000000a', 'ISBN コードが正しくありません'.encode()),
+        ('000000000000x', 'ISBN コードが正しくありません'.encode()),
         ('0000000000', '書籍情報を取得できませんでした'.encode()),
         ('0000000001', 'ISBN コードが正しくありません'.encode()),
-        ('a000000000', 'ISBN コードが正しくありません'.encode()),
+        ('x000000000', 'ISBN コードが正しくありません'.encode()),
         ('000000000x', 'ISBN コードが正しくありません'.encode()),
     )
 )

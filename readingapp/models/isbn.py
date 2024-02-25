@@ -16,10 +16,8 @@ def check_ISBN10(isbn_10):
 
     if isbn_10[9].isdigit():
         check_digit = int(isbn_10[-1])
-    elif isbn_10[9] == 'X':
-        check_digit = 10
     else:
-        return False
+        check_digit = 10
 
     if check_digit == calculate_check_digit_10(isbn_10):
         return True
