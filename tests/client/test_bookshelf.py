@@ -43,14 +43,17 @@ def test_index_get(client: testing.FlaskClient, auth):
     assert b'title2' in response.data
 
 
-@pytest.mark.parametrize(('region', 'status', 'keyword'), (
-    ('all', 'all', '1'),
-    ('title', 'all', 'title1'),
-    ('authors', 'all', 'authors1'),
-    ('publisher', 'all', 'publisher1'),
-    ('comment', 'all', 'comment1'),
-    ('all', 'finished', ''),
-))
+@pytest.mark.parametrize(
+    ('region', 'status', 'keyword'),
+    (
+        ('all', 'all', '1'),
+        ('title', 'all', 'title1'),
+        ('authors', 'all', 'authors1'),
+        ('publisher', 'all', 'publisher1'),
+        ('comment', 'all', 'comment1'),
+        ('all', 'finished', ''),
+    )
+)
 def test_index_post(client: testing.FlaskClient, auth, region, status, keyword):
     auth.login()
     with client:
@@ -95,10 +98,13 @@ def test_create(client: testing.FlaskClient, auth, monkeypatch):
     assert '鏡の国のアリス'.encode() in client.get('/').data
 
 
-@pytest.mark.parametrize(('isbn', 'message'), (
-    ('0000000000000', '書籍情報を取得できませんでした'.encode()),
-    ('0000000000001', 'ISBN コードが正しくありません'.encode()),
-))
+@pytest.mark.parametrize(
+    ('isbn', 'message'),
+    (
+        ('0000000000000', '書籍情報を取得できませんでした'.encode()),
+        ('0000000000001', 'ISBN コードが正しくありません'.encode()),
+    )
+)
 def test_create_falied(client: testing.FlaskClient, auth, monkeypatch, isbn, message):
     monkeypatch.setattr('readingapp.models.api.use_api', fake_use_api)
     auth.login()
@@ -125,10 +131,13 @@ def test_select_falied(client: testing.FlaskClient, auth):
         assert '登録済みの書籍です'.encode() in response.data
 
 
-@pytest.mark.parametrize(('post_id', 'status', 'comment'), (
-    ('1', None, 'test_update1'),
-    ('2', 'finished', 'test_update2'),
-))
+@pytest.mark.parametrize(
+    ('post_id', 'status', 'comment'),
+    (
+        ('1', None, 'test_update1'),
+        ('2', 'finished', 'test_update2'),
+    )
+)
 def test_update(client: testing.FlaskClient, auth, post_id, status, comment):
     auth.login()
     with client:
@@ -179,9 +188,7 @@ def test_owner_required(client: testing.FlaskClient, auth):
         assert response.status_code == 403
 
 
-@pytest.mark.parametrize('path', (
-    '/100/update',
-))
+@pytest.mark.parametrize('path', ('/100/update',))
 def test_exists_required(client: testing.FlaskClient, auth, path):
     auth.login()
     assert client.get(path).status_code == 404
