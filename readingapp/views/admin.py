@@ -15,7 +15,7 @@ from readingapp.models.database.user import (
 bp = Blueprint('admin', __name__, url_prefix='/admin')
 
 
-@bp.route('/', methods=('GET', 'POST'))
+@bp.route('', methods=('GET', 'POST'))
 @login_required_as_admin
 def index():
     users = search_user()
@@ -54,7 +54,7 @@ def logout():
     return redirect(url_for('admin.login'))
 
 
-@bp.route('/<int:user_id>/update/')
+@bp.route('/<int:user_id>/update')
 @login_required_as_admin
 def update(user_id):
     user = read_user(user_id)
