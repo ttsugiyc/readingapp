@@ -70,6 +70,21 @@ def test_index_post(client: testing.FlaskClient, auth, region, status, keyword):
         assert b'title2' not in response.data
 
 
+def test_index_post_not_finished(client: testing.FlaskClient, auth):
+    auth.login()
+    with client:
+        assert client.get('/').status_code == 200
+        response = client.post(
+            '/',
+            data={
+                'sort': 'created', 'region': 'all', 'status': 'not_finished',
+                'keyword': '', 'token': flask.session['token']
+            }
+        )
+        assert b'title1' not in response.data
+        assert b'title2' in response.data
+
+
 def fake_search_by_api(isbn):
     if isbn == '9784042118046' or isbn == '4042118046':
         path = os.path.join(os.path.dirname(__file__), 'alice.json')
