@@ -55,9 +55,9 @@ pip install <配布ファイルのパス>
 ### 起動・停止
 アプリの起動は次のコマンドで行う。
 ```
-flask --app readingapp run
+waitress-serve --call readingapp:create_app
 ```
-Web ブラウザで `http://127.0.0.1:5000/` を開いて使用する。アプリの停止は `Ctrl+C`。
+Web ブラウザで `http://127.0.0.1:8080/` を開いて使用する。アプリの停止は `Ctrl+C`。
 
 ### 初期設定
 セキュリティを高めるため、管理者はアプリの初期設定を行う必要がある。
@@ -78,7 +78,7 @@ Web ブラウザで `http://127.0.0.1:5000/` を開いて使用する。アプ�
 
 - アプリの起動
 ```
-flask --app readingapp run
+waitress-serve --call readingapp:create_app
 ```
 - データベースの初期化、ダウンロードした書影の削除
 ```
@@ -108,7 +108,7 @@ py -m venv venv
 
 仮想環境に依存ライブラリをインストールする。
 ```
-pip install flask requests pytest coverage build
+pip install flask requests waitress pytest coverage build
 ```
 
 Tailwind CSS をインストールする。
@@ -122,7 +122,7 @@ npm install
 ```
 flask --app readingapp run --debug
 ```
-デバッグモードではファイルの更新が反映される。また、ユーザーページ下部に管理者ページへのリンクが常に表示される。
+デバッグモードではファイルの更新が反映される。また、ユーザーページ下部に管理者ページへのリンクが表示される。
 
 ### Tailwind CSS の使用
 `/readingapp/templates` 以下を編集するときは、`/tailwindcss` で以下のコマンドを実行し、CSS ファイルが自動で更新されるようにしておく。
