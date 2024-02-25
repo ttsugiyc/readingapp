@@ -53,6 +53,31 @@ def test_logout(client: testing.FlaskClient, auth):
         assert 'token' not in flask.session
 
 
+@pytest.mark.parametrize(
+    ('region', 'keyword'),
+    (
+        ('username', 'test'),
+        ('email', 'test@test'),
+        ('all', 'test'),
+    )
+)
+def test_index(client: testing.FlaskClient, auth, region, keyword):
+    auth.admin_login()
+    with client:
+        response = client.get('/admin')
+        assert response.status_code == 200
+        assert b'test' in response.data
+        assert b'test@test' in response.data
+
+        response = client.post(
+            '/admin',
+            data={'region': region, 'keyword': keyword, 'token': flask.session['token']}
+        )
+        assert response.status_code == 200
+        assert b'test' in response.data
+        assert b'other' not in response.data
+
+
 def test_update(client: testing.FlaskClient, auth):
     auth.admin_login()
     with client:
