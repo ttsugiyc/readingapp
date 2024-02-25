@@ -13,7 +13,7 @@ from flask import testing
 ))
 def test_login_required_get(client: testing.FlaskClient, path):
     response = client.get(path)
-    assert response.headers["Location"] == "/auth/login"
+    assert response.headers['Location'] == '/auth/login'
 
 
 @pytest.mark.parametrize('path', (

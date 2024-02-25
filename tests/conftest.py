@@ -60,6 +60,15 @@ class AuthActions(object):
 
     def logout(self):
         return self._client.get('/auth/logout')
+    
+    def admin_login(self, password='admin'):
+        return self._client.post(
+            '/admin/login',
+            data={'password': password}
+        )
+    
+    def admin_logout(self):
+        return self._client.get('/admin/logout')
 
 
 @pytest.fixture
