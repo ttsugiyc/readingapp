@@ -7,7 +7,8 @@ VALUES
 INSERT INTO book (title, isbn_13, authors, publisher, image_name)
 VALUES
   ('title1', '0123456789012', 'authors1', 'publisher1', 'image1'),
-  ('title2', '0123456789013', 'authors2', 'publisher2', 'image2');
+  ('title2', '0123456789029', 'authors2', 'publisher2', 'image2'),
+  ('title3', '0123456789036', 'authors3', 'publisher3', 'image3');
 
 INSERT INTO post (user_id, book_id, comment, status)
 VALUES

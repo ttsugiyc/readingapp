@@ -79,23 +79,30 @@ def fake_use_api(isbn_13):
     return data
 
 
-def test_create(client: testing.FlaskClient, auth, monkeypatch):
+@pytest.mark.parametrize(
+    ('book_id', 'isbn', 'title'),
+    (
+        ('4', '9784042118046', '鏡の国のアリス'.encode()),
+        ('3', '0123456789036', b'title3'),
+    )
+)
+def test_create(client: testing.FlaskClient, auth, monkeypatch, book_id, isbn, title):
     monkeypatch.setattr('readingapp.models.api.use_api', fake_use_api)
     auth.login()
     with client:
         assert client.get('/create').status_code == 200
         response = client.post(
             '/create',
-            data={'isbn': '978-4042118046', 'token': flask.session['token']}
+            data={'isbn': isbn, 'token': flask.session['token']}
         )
-        assert '鏡の国のアリス'.encode() in response.data
+        assert title in response.data
         response = client.post(
             '/select',
-            data={'book_id': '3', 'token': flask.session['token']}
+            data={'book_id': book_id, 'token': flask.session['token']}
         )
         assert response.headers['Location'] == '/'
 
-    assert '鏡の国のアリス'.encode() in client.get('/').data
+    assert title in client.get('/').data
 
 
 @pytest.mark.parametrize(
@@ -136,6 +143,7 @@ def test_select_falied(client: testing.FlaskClient, auth):
     (
         ('1', None, 'test_update1'),
         ('2', 'finished', 'test_update2'),
+        ('1', 'finished', '0'*1000)
     )
 )
 def test_update(client: testing.FlaskClient, auth, post_id, status, comment):
@@ -155,6 +163,16 @@ def test_update(client: testing.FlaskClient, auth, post_id, status, comment):
         else:
             assert '>読了</p>'.encode() not in response.data
         assert comment.encode() in response.data
+
+
+def test_update_falied(client: testing.FlaskClient, auth):
+    auth.login()
+    with client:
+        url = '/1/update'
+        client.get(url)
+        response = client.post(url, data={'comment': '0'*1001, 'token': flask.session['token']})
+        assert response.status_code == 200
+        assert 'コメントは1000文字以内で入力して下さい'.encode() in response.data
 
 
 def test_delete(client: testing.FlaskClient, auth):
