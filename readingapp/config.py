@@ -34,7 +34,7 @@ def init_pass_command():
 
 
 def register_config(app: Flask, test_config=None):
-    # コマンド追加→基本設定→設定ファイル読込→テスト設定読込
+    # コマンド追加→基本設定→設定ファイル読込
     app.cli.add_command(init_pass_command)
 
     app.config.from_mapping(
@@ -44,6 +44,10 @@ def register_config(app: Flask, test_config=None):
         ADMIN_TOKEN = None,
         TESTING = test_config is not None,
     )
+
+    if test_config:
+        app.config.from_mapping(test_config)
+
     # ensure the instance folder exists
     if not os.path.isdir(app.instance_path):
         os.makedirs(app.instance_path)
@@ -51,14 +55,11 @@ def register_config(app: Flask, test_config=None):
     if not os.path.isdir(app.config['IMAGE_FOLDER']):
         os.makedirs(app.config['IMAGE_FOLDER'])
 
-    if os.path.isfile(app.config['CONFIG']):
+    try:
         app.config.from_file(app.config['CONFIG'], load=json.load)
 
-    else:
+    except (OSError, json.decoder.JSONDecodeError):
         init_pass(app)
-
-    if test_config:
-        app.config.from_mapping(test_config)
 
 
 def change_pass():

@@ -6,12 +6,15 @@ from flask import testing
 from readingapp.models.database import base
 
 
-@pytest.mark.parametrize(('username', 'email', 'password'), (
-    ('a', 'a@a', 'a'),
-    ('a', None, 'a'),
-    ('0123456789012345', 'a@a', 'a'),
-    ('a', '01234567890123456789@012345678', 'a'),
-))
+@pytest.mark.parametrize(
+    ('username', 'email', 'password'),
+    (
+        ('a', 'a@a', 'a'),
+        ('a', None, 'a'),
+        ('0123456789012345', 'a@a', 'a'),
+        ('a', '01234567890123456789@012345678', 'a'),
+    )
+)
 def test_register(app: flask.Flask, client: testing.FlaskClient, username, email, password):
     assert client.get('/auth/register').status_code == 200
     response = client.post(
@@ -27,18 +30,21 @@ def test_register(app: flask.Flask, client: testing.FlaskClient, username, email
         ).fetchone() is not None
 
 
-@pytest.mark.parametrize(('username', 'email', 'password', 'message'), (
-    ('', 'a@a', 'a', 'ユーザー名を入力して下さい'.encode()),
-    ('あ', 'a@a', 'a', 'ユーザー名に使用できない文字「あ」が含まれています'.encode()),
-    ('01234567890123456', 'a@a', 'a', 'ユーザー名は16文字以内で入力して下さい'.encode()),
-    ('test', 'a@a', 'a', 'そのユーザー名は既に使用されています'.encode()),
+@pytest.mark.parametrize(
+    ('username', 'email', 'password', 'message'),
+    (
+        ('', 'a@a', 'a', 'ユーザー名を入力して下さい'.encode()),
+        ('あ', 'a@a', 'a', 'ユーザー名に使用できない文字「あ」が含まれています'.encode()),
+        ('01234567890123456', 'a@a', 'a', 'ユーザー名は16文字以内で入力して下さい'.encode()),
+        ('test', 'a@a', 'a', 'そのユーザー名は既に使用されています'.encode()),
 
-    ('a', 'あ@a', 'a', 'メールアドレスに使用できない文字「あ」が含まれています'.encode()),
-    ('a', '01234567890123456789@0123456789', 'a', 'メールアドレスは30文字以内で入力して下さい'.encode()),
-    ('a', 'test@test', 'a', 'そのメールアドレスは既に使用されています'.encode()),
+        ('a', 'あ@a', 'a', 'メールアドレスに使用できない文字「あ」が含まれています'.encode()),
+        ('a', '01234567890123456789@0123456789', 'a', 'メールアドレスは30文字以内で入力して下さい'.encode()),
+        ('a', 'test@test', 'a', 'そのメールアドレスは既に使用されています'.encode()),
 
-    ('a', 'a@a', '', 'パスワードを入力して下さい'.encode()),
-))
+        ('a', 'a@a', '', 'パスワードを入力して下さい'.encode()),
+    )
+)
 def test_register_validate_input(client: testing.FlaskClient, username, email, password, message):
     response = client.post(
         '/auth/register',
@@ -48,15 +54,23 @@ def test_register_validate_input(client: testing.FlaskClient, username, email, p
     assert message in response.data
 
 
-def test_login(client: testing.FlaskClient):
+def test_login(client: testing.FlaskClient, auth):
     assert client.get('/auth/login').status_code == 200
 
+    with client:
+        assert auth.login().headers['Location'] == '/'
+        assert flask.session.get('user_id') == 1
 
-def test_login_failed(client: testing.FlaskClient):
-    response = client.post(
-        '/auth/login',
-        data={'username': 'a', 'password': 'a'}
+
+@pytest.mark.parametrize(
+    ('username', 'password'),
+    (
+        ('invalid', 'test'),
+        ('test', 'invalid')
     )
+)
+def test_login_failed(auth, username, password):
+    response = auth.login(username, password)
     assert response.status_code == 200
     assert 'ログインできませんでした'.encode() in response.data
 
