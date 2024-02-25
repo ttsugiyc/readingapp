@@ -7,8 +7,17 @@ import requests
 from flask import current_app
 
 
-def request_image(url):
-    response = requests.get(url)
+def search_by_api(isbn_13):
+    url = f'https://www.googleapis.com/books/v1/volumes?q=isbn:{isbn_13}'
+    return requests.get(url).json()
+
+
+def get_image_by_api(url):
+    return requests.get(url)
+
+
+def get_image(url):
+    response = get_image_by_api(url)
     extension = mimetypes.guess_extension(response.headers['Content-Type'])
     if response.status_code != 200:
         current_app.logger.info(f'Invalid responce: {response.status_code}')
@@ -66,17 +75,12 @@ def translate_response(response, isbn_13):
         if image_links:
             image_url = image_links.get('thumbnail')
             if image_url:
-                book['image_name'] = request_image(image_url)
+                book['image_name'] = get_image(image_url)
 
         books.append(book)
     return books
 
 
-def use_api(isbn_13):
-    url = f'https://www.googleapis.com/books/v1/volumes?q=isbn:{isbn_13}'
-    return requests.get(url).json()
-
-
 def request_books(isbn_13):
-    response = use_api(isbn_13)
+    response = search_by_api(isbn_13)
     return translate_response(response, isbn_13)

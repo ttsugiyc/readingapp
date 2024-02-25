@@ -1,6 +1,7 @@
 import json
 import os
 
+import requests.models
 import pytest
 import flask
 from flask import testing
@@ -69,25 +70,36 @@ def test_index_post(client: testing.FlaskClient, auth, region, status, keyword):
         assert b'title2' not in response.data
 
 
-def fake_use_api(isbn_13):
-    if isbn_13[:3] != '978':
+def fake_search_by_api(isbn):
+    if isbn == '9784042118046' or isbn == '4042118046':
+        path = os.path.join(os.path.dirname(__file__), 'alice.json')
+        with open(path, encoding='utf8') as f:
+            data = json.load(f)
+        return data
+
+    else:
         return {}
 
-    path = os.path.join(os.path.dirname(__file__), 'alice.json')
-    with open(path, encoding='utf8') as f:
-        data = json.load(f)
-    return data
+
+def fake_get_image_by_api(url):
+    response = requests.models.Response()
+    response.status_code = 200
+    response.headers['Content-Type'] = 'image/jpeg'
+    response._content = b'image'
+    return response
 
 
 @pytest.mark.parametrize(
     ('book_id', 'isbn', 'title'),
     (
         ('4', '9784042118046', '鏡の国のアリス'.encode()),
+        ('4', '4042118046', '鏡の国のアリス'.encode()),
         ('3', '0123456789036', b'title3'),
     )
 )
 def test_create(client: testing.FlaskClient, auth, monkeypatch, book_id, isbn, title):
-    monkeypatch.setattr('readingapp.models.api.use_api', fake_use_api)
+    monkeypatch.setattr('readingapp.models.api.search_by_api', fake_search_by_api)
+    monkeypatch.setattr('readingapp.models.api.get_image_by_api', fake_get_image_by_api)
     auth.login()
     with client:
         assert client.get('/create').status_code == 200
@@ -108,12 +120,19 @@ def test_create(client: testing.FlaskClient, auth, monkeypatch, book_id, isbn, t
 @pytest.mark.parametrize(
     ('isbn', 'message'),
     (
+        ('0', 'ISBN コードが正しくありません'.encode()),
         ('0000000000000', '書籍情報を取得できませんでした'.encode()),
         ('0000000000001', 'ISBN コードが正しくありません'.encode()),
+        ('000000000000a', 'ISBN コードが正しくありません'.encode()),
+        ('0000000000', '書籍情報を取得できませんでした'.encode()),
+        ('0000000001', 'ISBN コードが正しくありません'.encode()),
+        ('a000000000', 'ISBN コードが正しくありません'.encode()),
+        ('000000000x', 'ISBN コードが正しくありません'.encode()),
     )
 )
 def test_create_falied(client: testing.FlaskClient, auth, monkeypatch, isbn, message):
-    monkeypatch.setattr('readingapp.models.api.use_api', fake_use_api)
+    monkeypatch.setattr('readingapp.models.api.search_by_api', fake_search_by_api)
+    monkeypatch.setattr('readingapp.models.api.get_image_by_api', fake_get_image_by_api)
     auth.login()
     with client:
         assert client.get('/create').status_code == 200
