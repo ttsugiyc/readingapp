@@ -136,6 +136,10 @@ npx tailwindcss -i input.css -o ../readingapp/static/style.css --watch
 coverage run -m pytest
 coverage report
 ```
+HTMLレポートの作成は、以下のコマンド。レポートを見るには`htmlcov/index.html`をブラウザで開く
+```
+coverage html
+```
 
 ### 配布ファイルの作成
 配布ファイルの更新は次のコマンド。

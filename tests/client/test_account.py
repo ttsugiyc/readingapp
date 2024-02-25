@@ -158,3 +158,15 @@ def test_delete(client: testing.FlaskClient, auth):
     # ログインできなくなる
     response = auth.login()
     assert response.status_code == 200
+
+
+def test_delete_failed(client: testing.FlaskClient, auth):
+    auth.login()
+    with client:
+        assert client.get('/account/delete').status_code == 200
+
+        response = client.post(
+            '/account/delete',
+            data={'password': 'invalid', 'token': flask.session['token']}
+        )
+        assert 'パスワードが違います'.encode() in response.data
