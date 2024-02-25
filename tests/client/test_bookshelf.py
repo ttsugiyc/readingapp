@@ -144,7 +144,7 @@ def test_create_falied(client: testing.FlaskClient, auth, monkeypatch, isbn, mes
         assert message in response.data
 
 
-def test_select_falied(client: testing.FlaskClient, auth):
+def test_select_already_exists(client: testing.FlaskClient, auth):
     auth.login()
     with client:
         client.get('/create')
@@ -157,11 +157,22 @@ def test_select_falied(client: testing.FlaskClient, auth):
         assert '登録済みの書籍です'.encode() in response.data
 
 
+def test_select_falied(client: testing.FlaskClient, auth):
+    auth.login()
+    with client:
+        client.get('/create')
+        response = client.post(
+            '/select',
+            data={'book_id': 100, 'token': flask.session['token']}
+        )
+        assert response.status_code == 404
+
+
 @pytest.mark.parametrize(
     ('post_id', 'status', 'comment'),
     (
         ('1', None, 'test_update1'),
-        ('2', 'finished', 'test_update2'),
+        ('2', 'finished', 'test_update2あ'),
         ('1', 'finished', '0'*1000)
     )
 )
