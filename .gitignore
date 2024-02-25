@@ -1,4 +1,6 @@
 venv/
+tailwindcss/node_modules/
+tmp.txt
 
 *.pyc
 __pycache__/
@@ -13,5 +15,3 @@ htmlcov/
 build/
 *.egg-info/
 PKG-INFO
-
-tailwindcss/node_modules/

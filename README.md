@@ -108,7 +108,7 @@ py -m venv venv
 
 仮想環境に依存ライブラリをインストールする。
 ```
-pip install flask requests build
+pip install flask requests pytest coverage build
 ```
 
 Tailwind CSS をインストールする。
