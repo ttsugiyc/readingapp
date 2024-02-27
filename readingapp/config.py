@@ -60,6 +60,9 @@ def register_config(app: Flask, test_config=None):
 
     except (OSError, json.decoder.JSONDecodeError):
         init_pass(app)
+    
+    if app.config['SECRET_KEY'] == 'dev':
+        app.logger.warning('Starts with default settings')
 
 
 def change_pass():
