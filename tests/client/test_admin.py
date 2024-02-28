@@ -92,6 +92,11 @@ def test_update(client: testing.FlaskClient, auth):
     assert 'ログインできませんでした'.encode() in auth.login().data
 
 
+def test_exists_required(client: testing.FlaskClient, auth):
+    auth.admin_login()
+    assert client.get('/admin/100/update').status_code == 404
+
+
 def test_username(client: testing.FlaskClient, auth):
     auth.admin_login()
     with client:

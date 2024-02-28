@@ -3,6 +3,7 @@ import secrets
 
 from flask import request, g, session
 from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.exceptions import abort
 
 from readingapp.exceptions import MyMessage, UniquenessError, PasswordError, LoginError
 from readingapp.models.database.base import get_database
@@ -73,6 +74,8 @@ def read_user(user_id):
     db = get_database()
     sql = 'SELECT * FROM user WHERE id = ?'
     user = db.execute(sql, (user_id,)).fetchone()
+    if not user:
+        abort(404)
     return user
 
 

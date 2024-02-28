@@ -2,7 +2,7 @@ import functools
 import secrets
 
 from flask import current_app, g, request, session, redirect, url_for
-from werkzeug.exceptions import abort
+from werkzeug.exceptions import abort, NotFound
 
 from readingapp.models.database.user import read_user
 
@@ -22,8 +22,9 @@ def login_required(view):
         if user_id is None:
             return redirect(url_for('auth.login'))
 
-        g.user = read_user(user_id)
-        if g.user is None:
+        try:
+            g.user = read_user(user_id)
+        except NotFound:
             return redirect(url_for('auth.login'))
 
         protect_from_csrf()
