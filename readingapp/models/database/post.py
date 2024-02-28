@@ -3,7 +3,7 @@ import unicodedata
 from flask import g, request
 from werkzeug.exceptions import abort
 
-from readingapp.exceptions import MyException
+from readingapp.exceptions import MyMessage
 from readingapp.models.database.base import get_database
 
 
@@ -17,7 +17,7 @@ def create_post():
     except db.IntegrityError as e:
         db.rollback()
         if e.args == ('UNIQUE constraint failed: post.user_id, post.book_id',):
-            raise MyException('登録済みの書籍です')
+            raise MyMessage('登録済みの書籍です')
 
         if e.args == ('FOREIGN KEY constraint failed',):
             abort(404)
@@ -47,7 +47,7 @@ def get_width(string: str):
 
 def validate_comment(comment: str):
     if not get_width(comment) <= 1000:
-        raise MyException('コメントは1000文字以内で入力して下さい')
+        raise MyMessage('コメントは1000文字以内で入力して下さい')
     return comment
 
 

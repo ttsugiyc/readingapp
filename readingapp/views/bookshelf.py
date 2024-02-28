@@ -1,7 +1,7 @@
 from flask import Blueprint, flash, redirect, render_template, request, url_for
 
 from readingapp.security import login_required, check_owner
-from readingapp.exceptions import MyException
+from readingapp.exceptions import MyMessage
 from readingapp.models.isbn import canonicalize_ISBN
 from readingapp.models.api import request_books
 from readingapp.models.database.post import create_post, read_post, update_post, delete_post, search_posts
@@ -31,7 +31,7 @@ def get_books():
         books = search_books(isbn_13)
     
     if not books:
-        raise MyException('書籍情報を取得できませんでした')
+        raise MyMessage('書籍情報を取得できませんでした')
 
     return books
 
@@ -46,7 +46,7 @@ def get_books():
 #     books = search_books(isbn_13)
     
 #     if not books:
-#         raise MyException('書籍情報を取得できませんでした')
+#         raise MyMessage('書籍情報を取得できませんでした')
 
 #     return books
 
@@ -59,7 +59,7 @@ def create():
             books = get_books()
             return render_template('user/bookshelf/create.html', books=books)
 
-        except MyException as e:
+        except MyMessage as e:
             flash(e.__str__(), category='error')
 
     return render_template('user/bookshelf/create.html', books=[])
@@ -72,7 +72,7 @@ def select():
         create_post()
         flash('書籍を追加しました')
 
-    except MyException as e:
+    except MyMessage as e:
         flash(e.__str__(), category='error')
 
     return redirect(url_for('bookshelf.index'))
@@ -90,7 +90,7 @@ def update(post_id):
             flash('読書記録を更新しました')
             return redirect(url_for('bookshelf.index'))
 
-        except MyException as e:
+        except MyMessage as e:
             flash(e.__str__(), category='error')
 
     return render_template('user/bookshelf/update.html', post=post)

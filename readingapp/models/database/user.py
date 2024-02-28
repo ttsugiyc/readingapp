@@ -4,21 +4,21 @@ import secrets
 from flask import request, g, session
 from werkzeug.security import generate_password_hash, check_password_hash
 
-from readingapp.exceptions import MyException, UniquenessError, PasswordError, LoginError
+from readingapp.exceptions import MyMessage, UniquenessError, PasswordError, LoginError
 from readingapp.models.database.base import get_database
 
 
 def validate_username(username: str):
     """文字幅16, ASCII, Not-Null"""
     if not username:
-        raise MyException('ユーザー名を入力して下さい')
+        raise MyMessage('ユーザー名を入力して下さい')
 
     if not re.fullmatch('[\u0000-\u007F]+', username):
         char = re.search('[^\u0000-\u007F]', username).group()
-        raise MyException(f'ユーザー名に使用できない文字「{char}」が含まれています')
+        raise MyMessage(f'ユーザー名に使用できない文字「{char}」が含まれています')
 
     if not len(username) <= 16:
-        raise MyException('ユーザー名は16文字以内で入力して下さい')
+        raise MyMessage('ユーザー名は16文字以内で入力して下さい')
 
     return username
 
@@ -30,10 +30,10 @@ def validate_email(email: str):
 
     if not re.fullmatch('[\u0000-\u007F]+', email):
         char = re.search('[^\u0000-\u007F]', email).group()
-        raise MyException(f'メールアドレスに使用できない文字「{char}」が含まれています')
+        raise MyMessage(f'メールアドレスに使用できない文字「{char}」が含まれています')
 
     if not len(email) <= 30:
-        raise MyException('メールアドレスは30文字以内で入力して下さい')
+        raise MyMessage('メールアドレスは30文字以内で入力して下さい')
 
     return email
 
@@ -41,7 +41,7 @@ def validate_email(email: str):
 def validate_password(password: str, salt: str):
     """Not-Null, password->hash, salt"""
     if not password:
-        raise MyException('パスワードを入力して下さい')
+        raise MyMessage('パスワードを入力して下さい')
 
     return generate_password_hash(password + salt)
 

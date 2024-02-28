@@ -1,7 +1,7 @@
 from flask import Blueprint, flash, redirect, render_template, request, url_for
 
 from readingapp.security import login_required
-from readingapp.exceptions import MyException
+from readingapp.exceptions import MyMessage
 from readingapp.models.database.user import (
     update_username_by_self, update_user_email_by_self,
     update_user_password_by_self, delete_user_by_self
@@ -26,7 +26,7 @@ def username():
             flash('ユーザー名を変更しました')
             return redirect(url_for('account.settings'))
 
-        except MyException as e:
+        except MyMessage as e:
             flash(e.__str__(), category='error')
 
     return render_template('user/account/username.html')
@@ -41,7 +41,7 @@ def email():
             flash('メールアドレスを変更しました')
             return redirect(url_for('account.settings'))
 
-        except MyException as e:
+        except MyMessage as e:
             flash(e.__str__(), category='error')
 
     return render_template('user/account/email.html')
@@ -56,7 +56,7 @@ def password():
             flash('パスワードを変更しました')
             return redirect(url_for('account.settings'))
 
-        except MyException as e:
+        except MyMessage as e:
             flash(e.__str__(), category='error')
 
     return render_template('user/account/password.html')
@@ -71,7 +71,7 @@ def delete():
             flash('アカウントを削除しました')
             return redirect(url_for('auth.login'))
 
-        except MyException as e:
+        except MyMessage as e:
             flash(e.__str__(), category='error')
 
     return render_template('user/account/delete.html')

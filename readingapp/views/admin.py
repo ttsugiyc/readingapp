@@ -4,7 +4,7 @@ from flask import Blueprint, flash, redirect, render_template, g, request, sessi
 from werkzeug.security import check_password_hash
 
 from readingapp.security import login_required_as_admin
-from readingapp.exceptions import MyException, LoginError
+from readingapp.exceptions import MyMessage, LoginError
 from readingapp.config import change_pass
 from readingapp.models.database.user import (
     read_user, search_user, delete_user,
@@ -40,7 +40,7 @@ def login():
             login_as_admin()
             return redirect(url_for('admin.index'))
 
-        except MyException as e:
+        except MyMessage as e:
             flash(e.__str__(), category='error')
 
     return render_template('admin/login.html')
@@ -70,7 +70,7 @@ def username(user_id):
             flash('ユーザー名を変更しました')
             return redirect(url_for('admin.update', user_id=user_id))
         
-        except MyException as e:
+        except MyMessage as e:
             flash(e.__str__(), category='error')
 
     user = read_user(user_id)
@@ -86,7 +86,7 @@ def email(user_id):
             flash('メールアドレスを変更しました')
             return redirect(url_for('admin.update', user_id=user_id))
         
-        except MyException as e:
+        except MyMessage as e:
             flash(e.__str__(), category='error')
 
     user = read_user(user_id)
@@ -123,7 +123,7 @@ def settings():
             flash('設定を変更しました')
             return redirect(url_for('admin.index'))
 
-        except MyException as e:
+        except MyMessage as e:
             flash(e.__str__(), category='error')
 
     return render_template('admin/settings.html')
