@@ -44,15 +44,3 @@ def login_required_as_admin(view):
         return view(**kwargs)
 
     return wrapped_view
-
-
-def check_owner(post):
-    """
-    投稿が存在するか、本人の物か確認する
-    直接URLに入力される可能性があるため
-    """
-    if post is None:
-        abort(404)
-
-    if post['user_id'] != g.user['id']:
-        abort(403)

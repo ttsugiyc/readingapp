@@ -74,7 +74,7 @@ def read_user(user_id):
     db = get_database()
     sql = 'SELECT * FROM user WHERE id = ?'
     user = db.execute(sql, (user_id,)).fetchone()
-    if not user:
+    if user is None:
         abort(404)
     return user
 

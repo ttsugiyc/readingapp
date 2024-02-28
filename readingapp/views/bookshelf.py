@@ -1,6 +1,6 @@
 from flask import Blueprint, flash, redirect, render_template, request, url_for
 
-from readingapp.security import login_required, check_owner
+from readingapp.security import login_required
 from readingapp.exceptions import MyMessage
 from readingapp.models.isbn import canonicalize_ISBN
 from readingapp.models.api import request_books
@@ -82,7 +82,6 @@ def select():
 @login_required
 def update(post_id):
     post = read_post(post_id)
-    check_owner(post)
 
     if request.method == 'POST':
         try:
@@ -100,7 +99,6 @@ def update(post_id):
 @login_required
 def delete(post_id):
     post = read_post(post_id)
-    check_owner(post)
     delete_post(post_id)
     flash('書籍を削除しました')
     return redirect(url_for('bookshelf.index'))

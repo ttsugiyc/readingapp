@@ -31,6 +31,12 @@ def read_post(post_id):
         ' WHERE post.id = ?'
     )
     post = db.execute(sql, (post_id,)).fetchone()
+
+    if post is None:
+        abort(404)
+
+    if post['user_id'] != g.user['id']:
+        abort(403)
     return post
 
 
