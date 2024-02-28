@@ -96,7 +96,6 @@ def email(user_id):
 @bp.route('/<int:user_id>/password', methods=('GET', 'POST',))
 @login_required_as_admin
 def password(user_id):
-    g.user = read_user(user_id)
     if request.method == 'POST':
         update_user_password(user_id)
         flash('パスワードを変更しました')

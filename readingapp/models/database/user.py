@@ -107,9 +107,12 @@ def update_user_email(user_id):
 
 
 def update_user_password(user_id):
-    sql = 'UPDATE user SET password = ? WHERE id = ?'
-    new_password = validate_password(request.form.get('new_password'), g.user['salt'])
     db = get_database()
+    sql = 'SELECT salt FROM user WHERE id = ?'
+    salt = db.execute(sql, (user_id,)).fetchone()['salt']
+
+    sql = 'UPDATE user SET password = ? WHERE id = ?'
+    new_password = validate_password(request.form.get('new_password'), salt)
     db.execute(sql, (new_password, user_id))
     db.commit()
 
