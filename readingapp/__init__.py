@@ -1,9 +1,15 @@
+import os
+
 from flask import Flask
 
 
 def create_app(test_config=None):
     # create the app
     app = Flask(__name__)
+
+    # ensure the instance folder exists
+    if not os.path.isdir(app.instance_path):
+        os.makedirs(app.instance_path)
 
     # load modules
     from .config import register_config

@@ -45,6 +45,9 @@ def register_database(app: Flask):
     app.teardown_appcontext(close_database)
     app.cli.add_command(init_data_command)
 
+    if not os.path.isdir(app.config['IMAGE_FOLDER']):
+        os.makedirs(app.config['IMAGE_FOLDER'])
+
     if not os.path.isfile(app.config['DATABASE']):
         with app.app_context():
             init_data()

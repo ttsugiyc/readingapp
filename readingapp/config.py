@@ -48,13 +48,6 @@ def register_config(app: Flask, test_config=None):
     if test_config:
         app.config.from_mapping(test_config)
 
-    # ensure the instance folder exists
-    if not os.path.isdir(app.instance_path):
-        os.makedirs(app.instance_path)
-
-    if not os.path.isdir(app.config['IMAGE_FOLDER']):
-        os.makedirs(app.config['IMAGE_FOLDER'])
-
     try:
         app.config.from_file(app.config['CONFIG'], load=json.load)
 
