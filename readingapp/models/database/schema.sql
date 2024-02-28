@@ -6,7 +6,8 @@ CREATE TABLE user (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   username TEXT UNIQUE NOT NULL,
   email TEXT UNIQUE,
-  password TEXT NOT NULL
+  password TEXT NOT NULL,
+  salt TEXT NOT NULL
 );
 
 CREATE TABLE book (

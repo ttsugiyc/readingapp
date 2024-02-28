@@ -14,7 +14,7 @@ def test_init_pass_command(app: flask.Flask,runner: testing.FlaskCliRunner):
     )
     with app.app_context():
         init_pass_result = runner.invoke(args=['init-pass'])
-        assert 'Initialized the configuration.' in init_pass_result.output
+        assert 'Initialized the password.' in init_pass_result.output
         assert app.config['SECRET_KEY'] == 'dev'
         assert security.check_password_hash(app.config['PASSWORD'], 'admin')
 

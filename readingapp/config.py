@@ -30,7 +30,7 @@ def init_pass(app: Flask):
 def init_pass_command():
     """Clear the existing config file."""
     init_pass(current_app)
-    click.echo('Initialized the configuration.')
+    click.echo('Initialized the password.')
 
 
 def register_config(app: Flask, test_config=None):
@@ -62,7 +62,7 @@ def change_pass():
     """アプリから呼出"""
     if check_password_hash(current_app.config['PASSWORD'], request.form['password']):
         config = {
-            'SECRET_KEY': secrets.token_hex(),
+            'SECRET_KEY': secrets.token_hex(16),
             'PASSWORD': generate_password_hash(request.form['new_password'])
         }
         current_app.config.from_mapping(config)

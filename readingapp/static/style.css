@@ -733,10 +733,6 @@ video {
   max-width: 42rem;
 }
 
-.max-w-64 {
-  max-width: 16rem;
-}
-
 .max-w-6xl {
   max-width: 72rem;
 }
@@ -1023,11 +1019,6 @@ video {
 .text-white {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
-}
-
-.text-orange-500 {
-  --tw-text-opacity: 1;
-  color: rgb(249 115 22 / var(--tw-text-opacity));
 }
 
 .outline-none {

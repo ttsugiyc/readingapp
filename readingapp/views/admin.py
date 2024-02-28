@@ -1,6 +1,6 @@
 import secrets
 
-from flask import Blueprint, flash, redirect, render_template, request, session, url_for, current_app
+from flask import Blueprint, flash, redirect, render_template, g, request, session, url_for, current_app
 from werkzeug.security import check_password_hash
 
 from readingapp.security import login_required_as_admin
@@ -24,7 +24,7 @@ def index():
 
 def login_as_admin():
     if check_password_hash(current_app.config['PASSWORD'], request.form['password']):
-        token = secrets.token_hex()
+        token = secrets.token_hex(16)
         session.clear()
         session['admin'] = token
         current_app.config['ADMIN_TOKEN'] = token
@@ -96,6 +96,7 @@ def email(user_id):
 @bp.route('/<int:user_id>/password', methods=('GET', 'POST',))
 @login_required_as_admin
 def password(user_id):
+    g.user = read_user(user_id)
     if request.method == 'POST':
         update_user_password(user_id)
         flash('パスワードを変更しました')

@@ -12,7 +12,7 @@ def protect_from_csrf():
         if request.form.get('token') != session.get('token'):
             abort(401)
 
-    session['token'] = secrets.token_hex()
+    session['token'] = secrets.token_hex(16)
 
 
 def login_required(view):

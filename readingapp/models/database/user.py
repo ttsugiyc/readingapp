@@ -1,4 +1,5 @@
 import re
+import secrets
 
 from flask import request, g, session
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -37,20 +38,22 @@ def validate_email(email: str):
     return email
 
 
-def validate_password(password: str):
-    """Not-Null, password->hash"""
+def validate_password(password: str, salt: str):
+    """Not-Null, password->hash, salt"""
     if not password:
         raise MyException('パスワードを入力して下さい')
 
-    return generate_password_hash(password)
+    return generate_password_hash(password + salt)
 
 
 def create_user():
-    sql = 'INSERT INTO user (username, email, password) VALUES (?, ?, ?)'
+    sql = 'INSERT INTO user (username, email, password, salt) VALUES (?, ?, ?, ?)'
+    salt = secrets.token_hex(16)
     params = (
         validate_username(request.form.get('username')),
         validate_email(request.form.get('email')),
-        validate_password(request.form.get('password'))
+        validate_password(request.form.get('password'), salt),
+        salt,
     )
     db = get_database()
     try:
@@ -105,28 +108,32 @@ def update_user_email(user_id):
 
 def update_user_password(user_id):
     sql = 'UPDATE user SET password = ? WHERE id = ?'
+    new_password = validate_password(request.form.get('new_password'), g.user['salt'])
     db = get_database()
-    new_password = validate_password(request.form.get('new_password'))
     db.execute(sql, (new_password, user_id))
     db.commit()
 
 
+def auth_user():
+    return check_password_hash(g.user['password'], request.form.get('password') + g.user['salt'])
+
+
 def update_username_by_self():
-    if check_password_hash(g.user['password'], request.form.get('password')):
+    if auth_user():
         update_username(g.user['id'])
     else:
         raise PasswordError()
 
 
 def update_user_email_by_self():
-    if check_password_hash(g.user['password'], request.form.get('password')):
+    if auth_user():
         update_user_email(g.user['id'])
     else:
         raise PasswordError()
 
 
 def update_user_password_by_self():
-    if check_password_hash(g.user['password'], request.form.get('password')):
+    if auth_user():
         update_user_password(g.user['id'])
     else:
         raise PasswordError()
@@ -142,7 +149,7 @@ def delete_user(user_id):
 
 
 def delete_user_by_self():
-    if check_password_hash(g.user['password'], request.form.get('password')):
+    if auth_user():
         delete_user(g.user['id'])
     else:
         raise PasswordError()
@@ -151,11 +158,11 @@ def delete_user_by_self():
 def login_as_user():
     db = get_database()
     sql = 'SELECT * FROM user WHERE username = ?'
-    user = db.execute(sql, (request.form.get('username'),)).fetchone()
+    g.user = db.execute(sql, (request.form.get('username'),)).fetchone()
 
-    if user and check_password_hash(user['password'], request.form.get('password')):
+    if g.user and auth_user():
         session.clear()
-        session['user_id'] = user['id']
+        session['user_id'] = g.user['id']
     else:
         raise LoginError()
 
