@@ -9,33 +9,22 @@ import readingapp
 from readingapp.models.database import base
 
 
-with open(os.path.join(os.path.dirname(__file__), 'data.sql'), 'rb') as f:
-    _data_sql = f.read().decode('utf8')
-
-
 @pytest.fixture
 def app():
-    conf_fd, conf_path = tempfile.mkstemp()
-    img_path = tempfile.mkdtemp()
-    db_fd, db_path = tempfile.mkstemp()
+    instance_path = tempfile.mkdtemp()
+    static_folder = tempfile.mkdtemp()
 
-    app = readingapp.create_app({
-        'CONFIG': conf_path,
-        'IMAGE_FOLDER': img_path,
-        'DATABASE': db_path,
-    })
+    app = readingapp.create_app({}, instance_path, static_folder)
 
+    sql_path = os.path.join(os.path.dirname(__file__), 'data.sql')
     with app.app_context():
-        base.init_data()
-        base.get_database().executescript(_data_sql)
+        with open(sql_path, encoding='utf8') as f:
+            base.get_database().executescript(f.read())
 
     yield app
 
-    os.close(conf_fd)
-    os.unlink(conf_path)
-    shutil.rmtree(img_path)
-    os.close(db_fd)
-    os.unlink(db_path)
+    shutil.rmtree(instance_path)
+    shutil.rmtree(static_folder)
 
 
 @pytest.fixture

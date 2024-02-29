@@ -39,7 +39,7 @@ def test_index_get(client: testing.FlaskClient, auth):
     assert b'authors1' in response.data
     assert b'publisher1' in response.data
     assert b'test\ncomment' in response.data
-    assert b'src="/static/img/image1"' in response.data
+    assert b'image1' in response.data
     assert b'href="/1/update"' in response.data
     assert b'title2' in response.data
 

@@ -1,6 +1,5 @@
 venv/
 tailwindcss/node_modules/
-tmp.txt
 
 *.pyc
 __pycache__/
