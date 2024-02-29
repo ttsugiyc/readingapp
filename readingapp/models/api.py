@@ -17,14 +17,15 @@ def get_image_by_api(url):
 
 
 def get_image(url):
+    # 画像取得->拡張子判定->ファイル名生成->画像保存->ファイル名出力
     response = get_image_by_api(url)
-    extension = mimetypes.guess_extension(response.headers['Content-Type'])
     if response.status_code != 200:
-        current_app.logger.info(f'Invalid responce: {response.status_code}')
+        current_app.logger.info(f'Request failed: {response.status_code}')
         return None
 
+    extension = mimetypes.guess_extension(response.headers['Content-Type'])
     if not extension:
-        current_app.logger.info('Invalid responce: Extension is unknown.')
+        current_app.logger.info('Request failed: Extension is unknown.')
         return None
 
     for _ in range(10000):
@@ -33,7 +34,6 @@ def get_image(url):
         path = os.path.join(current_app.config['IMAGE_FOLDER'], name)
         if not os.path.exists(path):
             break
-
     else:
         current_app.logger.warning('Image name conflict could not be resolved.')
         return None
