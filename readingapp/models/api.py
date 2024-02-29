@@ -20,12 +20,12 @@ def get_image(url):
     # 画像取得->拡張子判定->ファイル名生成->画像保存->ファイル名出力
     response = get_image_by_api(url)
     if response.status_code != 200:
-        current_app.logger.info(f'Request failed: {response.status_code}')
+        current_app.logger.debug(f'Request failed: {response.status_code}')
         return None
 
     extension = mimetypes.guess_extension(response.headers['Content-Type'])
     if not extension:
-        current_app.logger.info('Request failed: Extension is unknown.')
+        current_app.logger.debug('Request failed: Extension is unknown.')
         return None
 
     for _ in range(10000):
@@ -35,12 +35,12 @@ def get_image(url):
         if not os.path.exists(path):
             break
     else:
-        current_app.logger.warning('Image name conflict could not be resolved.')
+        current_app.logger.error('Could not generate image name.')
         return None
 
     with open(path, 'wb') as local_file:
         local_file.write(response.content)
-        current_app.logger.info(f'Save the image: {name}')
+        current_app.logger.debug(f'Save the image: {name}')
     return name
 
 
