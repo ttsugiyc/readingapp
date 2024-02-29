@@ -1,6 +1,6 @@
 from flask import Blueprint, request, session, flash, redirect, render_template, url_for
 
-from readingapp.exceptions import MyMessage
+from readingapp.exceptions import Message
 from readingapp.models.database.user import create_user, login_as_user
 
 
@@ -15,7 +15,7 @@ def register():
             flash('アカウントを作成しました')
             return redirect(url_for('auth.login'))
         
-        except MyMessage as e:
+        except Message as e:
             flash(e.__str__(), category='error')
 
     return render_template('user/auth/register.html')
@@ -28,7 +28,7 @@ def login():
             login_as_user()
             return redirect(url_for('index'))
 
-        except MyMessage as e:
+        except Message as e:
             flash(e.__str__(), category='error')
 
     return render_template('user/auth/login.html')

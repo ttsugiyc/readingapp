@@ -1,6 +1,6 @@
 import re
 
-from readingapp.exceptions import MyMessage
+from readingapp.exceptions import Message
 
 
 def calculate_check_digit_10(isbn_10):
@@ -61,4 +61,4 @@ def canonicalize_ISBN(code):
         if check_ISBN13(code):
             return code
 
-    raise MyMessage('ISBN コードが正しくありません')
+    raise Message('ISBN コードが正しくありません')
