@@ -14,7 +14,8 @@ def save_pass(app: Flask):
         'SECRET_KEY': app.config['SECRET_KEY'],
         'PASSWORD': app.config['PASSWORD'],
     }
-    with open(app.config['CONFIG'], 'wt') as f:
+    config_path = os.path.join(app.instance_path, 'config.json')
+    with open(config_path, 'wt') as f:
         json.dump(config, f)
 
 
@@ -38,7 +39,6 @@ def register_config(app: Flask, test_config=None):
     app.cli.add_command(init_pass_command)
 
     app.config.from_mapping(
-        CONFIG = os.path.join(app.instance_path, 'config.json'),
         IMAGE_FOLDER = os.path.join(app.static_folder, 'img'),
         DATABASE = os.path.join(app.instance_path, 'db.sqlite'),
         ADMIN_TOKEN = None,
@@ -49,7 +49,7 @@ def register_config(app: Flask, test_config=None):
         app.config.from_mapping(test_config)
 
     try:
-        app.config.from_file(app.config['CONFIG'], load=json.load)
+        app.config.from_file('config.json', load=json.load)
 
     except (OSError, json.decoder.JSONDecodeError):
         init_pass(app)

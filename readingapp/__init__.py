@@ -3,9 +3,14 @@ import os
 from flask import Flask
 
 
-def create_app(test_config=None, instance_path=None, static_folder='static'):
+def create_app(test_config=None, static_folder='static', instance_path=None):
     # create the app
-    app = Flask(__name__, instance_path=instance_path, static_folder=static_folder)
+    app = Flask(
+        __name__,
+        static_folder=static_folder,
+        instance_path=instance_path,
+        instance_relative_config=True
+    )
 
     # ensure the instance folder exists
     if not os.path.isdir(app.instance_path):

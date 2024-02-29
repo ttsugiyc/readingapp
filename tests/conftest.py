@@ -11,10 +11,10 @@ from readingapp.models.database import base
 
 @pytest.fixture
 def app():
-    instance_path = tempfile.mkdtemp()
     static_folder = tempfile.mkdtemp()
+    instance_path = tempfile.mkdtemp()
 
-    app = readingapp.create_app({}, instance_path, static_folder)
+    app = readingapp.create_app({}, static_folder, instance_path)
 
     sql_path = os.path.join(os.path.dirname(__file__), 'data.sql')
     with app.app_context():
