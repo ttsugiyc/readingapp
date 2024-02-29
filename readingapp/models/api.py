@@ -54,7 +54,7 @@ def translate_response(response, isbn_13):
         info = item['volumeInfo']
         book = {}
 
-        # titleとisbn_13は必須
+        # title無しならば無視
         book['title'] = info.get('title')
         if not book['title']:
             current_app.logger.debug('"title" not found in response book.')
