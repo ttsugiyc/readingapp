@@ -44,6 +44,7 @@
         border border-teal-500 text-white hover:text-teal-500 text-center cursor-pointer
       "
       value="変更"
+      onclick="return confirm('全てのユーザーがログアウトされます');"
     >
 
     <input type="hidden" name="token" value="{{ session['token'] }}">
